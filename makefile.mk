@@ -1,7 +1,7 @@
 # Makefile for visual studio using nmake
 
 CPPFLAGS = /Iinclude /W4 /EHsc
-LDFLAGS = 
+LDFLAGS =
 LDLIBS =
 
 # Turn on optimisations
@@ -28,6 +28,10 @@ FOURIER_OBJS = $(FOURIER_CORE_OBJS) $(FOURIER_IMPLEMENTATION_OBJS)
 
 .cpp.obj :
 	$(CPP) $(CPPFLAGS) /c $< /Fo$@
+
+bin\test_tbb.exe : src/test_tbb.cpp $(FOURIER_OBJS)
+	-mkdir bin
+	$(CPP) $(CPPFLAGS) $** /Fe$@ /link $(LDFLAGS) $(LDLIBS)
 
 bin\test_fourier_transform.exe : src/test_fourier_transform.cpp $(FOURIER_OBJS)
 	-mkdir bin
