@@ -24,14 +24,11 @@ _Dislaimer: Never write your own fourier transform for production
 use. Everything you do here will be slower and less accurate than
 existing FFT libraries._
 
-_Note: Thanks to @bwh10 for identifying a number of problems in
-the instructions, and supplying solutions._
-
 1. Evironment and setup
 =======================
 
-Setting up TBB
---------------
+Choose a Target Environment
+---------------------------
 
 You can download Threaded Building Blocks from the [TBB Website](https://www.threadingbuildingblocks.org/)
 or it is available for many package managers
@@ -45,7 +42,21 @@ can install the binary packages on your machine.
 
 The target environment for this coursework is
 Ubuntu Server 14.04, specifically the Amazon AWS AMI
-version of Ubuntu 14.04. What you choose to do the
+version of Ubuntu 14.04. However, Ubuntu in a 
+virtual machine should be almost identical, and
+most linuxes (Linii?) will work fine. TBB also
+works well under Visual Studio and mingw, and
+according to previous students under MaxOS as well - part
+of the point of using TBB is that it has good
+cross-platform support.
+
+The only common platform I know where it _doesn't_
+work is cygwin64. Out of the box it won't work on
+cygwin32 either, but I've made available a patched
+version of the source distribution for cygwin32 here:
+TODO
+
+What you choose to do the
 development in is up to you, but the assessed compilation
 and evaluation will be done under Ubuntu in AWS. My plan
 is to use a [c4.8xlarge](http://aws.amazon.com/ec2/instance-types/)
@@ -53,7 +64,10 @@ instance, but you certainly shouldn't optimise your code
 specifically for that machine. This shouldn't matter
 to you now (as you're not relying on anything apart from
 TBB), but is more encouragement to try out AWS before
-you have to in the next coursework.
+you _have_ to in the next coursework.
+
+Getting a github account
+------------------------
 
 Submission will be via github, so one thing you need
 to do is become part of the HPCE github organisation. This
@@ -79,8 +93,16 @@ do it when you read this.
 
 _Note: Again, it is not a disaster if submission via github
 doesn't work, I will also be getting people to do a blackboard
-submission as backup so I get the code. (Also as a hedge in case
-it doesn't work my end, as I haven't tried it before)._
+submission as backup so I get the code. However, I did this
+for the first time last year, and it worked fine._
+
+Getting TBB
+-----------
+
+
+
+Initial Build
+-------------
 
 Included in this package is a `makefile`, which may get you
 started in posix, and `makefile.mk`, which will allow you
@@ -90,14 +112,6 @@ than GNU `make`, and cannot do many of the more advanced
 things such as parallel build, or using eval to create
 rules at make-time.
 
-_Note: I didn't do a very good job of explaining what you
-need to do to get started, particularly on different platforms.
-There is some [discussion here](https://github.com/HPCE/hpce_2014_cw3/issues/5),
-thanks to @AugustineTan and @bwh10._
-
-TBB should work well in Linux, OSX, MinGW via g++, and
-Windows via Visual Studio. Where it won't work (annoyingly)
-is under Cygwin.
 
 Once you have got TBB installed (the [lecture notes](http://cas.ee.ic.ac.uk/people/dt10/teaching/2014/hpce/hpce-lec6-introducing-tbb.pdf)
 may help, or you can use your package manager), to get things
@@ -260,7 +274,7 @@ so we could also do it in a much more matlab way:
     tbb::parallel_for(0u, n, loop_body);
 
 This is not the only form of `parallel_for`, but it is
-the easiest and most direct. Other forms allows for
+the easiest and most direct. Other forms allow for
 more efficient execution, but require more thought.
 
 Using tbb::parallel_for in the fourier transform
@@ -398,6 +412,7 @@ Task groups are declared as an object on the stack:
 
     #include "tbb/task_group.h"
 
+    // Within some function, create a group
     tbb::task_group group;
 
 you can then add tasks to the group dynamically,
@@ -608,9 +623,6 @@ on `src/your_login/direct_fourier_transform_parfor.cpp`
 with class name `hpce::your_login::direct_fourier_transform_chunked`, and name
 `hpce.your_login.direct_fourier_transform_chunked`.
 
-_Note: there was [a typo in the name](https://github.com/HPCE/hpce_2014_cw3/issues/10)
-here originally (though not in the list at the end). Thanks to @davidfof13 for
-the catch._
 
 ### Add parameterisable chunking to your class
 
@@ -633,15 +645,12 @@ original parfor iteration is O(n). But on the other side,
 you always want enough tasks to keep the processors occupied
 (no matter how many there are), so you can't set the chunk size to K=n.
 
-_Note: some further [discussion here](https://github.com/HPCE/hpce_2014_cw3/issues/12)
-about what "sensible default" could mean._
-
 5. Adjustable grain size for the FFT
 ====================================
 
 Our recursive parallel FFT is currently splitting down to
 individual tasks, which goes completely against the
-TBB advice about the minimimum work per thread.
+TBB advice about the minimimum work per task.
 
 Go back into `src/your_login/fast_fourier_transform_taskgroup.cpp`
 and make the base-case adjustable using the environment variable
@@ -694,7 +703,7 @@ iteration we have:
 
 1. j=0, w=1
 2. j=1, w=1 * wn
-3. j=2, w=2 * wn * wn
+3. j=2, w=1 * wn * wn
 
 Generalising, we find that for iteration j, w=wn^j.
 
@@ -705,7 +714,7 @@ Try calculating (1+1e-8)^1e8 in matlab, and notice:
 1. It is almost equal to _e_. Nice.
 2. It clearly does not take anything like 1e8 operations to calculate.
 
-In C++ the std::complex class supports the `std::pow` operator,
+In C++ the `std::complex` class supports the `std::pow` operator,
 which will raise a complex number to a real scalar, which
 can be used to jump ahead in the computation. In principle
 we could use this property to make the loops completely
@@ -757,12 +766,6 @@ for different values of `HPCE_FFT_LOOP_K`. You will
 probably not see much speed-up here, as the dominant
 cost tends to be the recursive part.
 
-_Note: edited to make the instructions clearer, as
-@bwh10 correctly pointed out it [was ambiguous](https://github.com/HPCE/hpce_2014_cw3/issues/4).
-The intent is for people to get the chunking working first
-in a sequential context, then to add the parallelism (the
-first part is more complex, the second part is easy)._
-
 As before, if `HPCE_FFT_LOOP_K` is not set, choose a sensible
 default based on your analysis of the scaling with n, and/or
 experiments. Though remember, it should be a sensible default
@@ -775,8 +778,8 @@ We now have two types of parallelism that we know work,
 so the natural choice is to combine them together.
 Create a new implementation called `fast_fourier_transform_combined`,
 using the conventions for naming from before, and integrate
-both forms of parallelism. This version should use either or both
-of the `HPCE_FFT_LOOP_K` and `HPCE_FFT_RECURSION_K` variables, and
+both forms of parallelism. This version should check both
+the `HPCE_FFT_LOOP_K` and `HPCE_FFT_RECURSION_K` variables, and
 fall back on a default if either or both is not set.
 
 Exploring the performance of this one is quite interesting,
@@ -903,13 +906,3 @@ I would suggest compiling and running your submission
 in AWS, just to get the feel of it. A correctly written
 submission should compile anywhere, with no real depencency
 on the environment, but it is good to try things out.
-
-Trouble-shooting tips
-=====================
-
-I'm collecting together the issues which might help people here:
-
-- `In lambda function: ... error: ‘this’ was not captured for this lambda function`
-
-  Odd g++ bug, with [fix](https://github.com/HPCE/hpce_2014_cw3/issues/6). thanks to @almanarif.
-
