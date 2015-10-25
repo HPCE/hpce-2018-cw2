@@ -42,19 +42,15 @@ can install the binary packages on your machine.
 
 The target environment for this coursework is
 Ubuntu Server 14.04, specifically the Amazon AWS AMI
-version of Ubuntu 14.04. However, Ubuntu in a 
+version of Ubuntu 14.04. However, Ubuntu in a
 virtual machine should be almost identical, and
 most linuxes (Linii?) will work fine. TBB also
-works well under Visual Studio and mingw, and
-according to previous students under MaxOS as well - part
+works well under Visual Studio, cygwin32, and mingw, and
+according to previous students under MacOS as well - part
 of the point of using TBB is that it has good
 cross-platform support.
-
 The only common platform I know where it _doesn't_
-work is cygwin64. Out of the box it won't work on
-cygwin32 either, but I've made available a patched
-version of the source distribution for cygwin32 here:
-TODO
+work is cygwin64.
 
 What you choose to do the
 development in is up to you, but the assessed compilation
@@ -65,6 +61,13 @@ specifically for that machine. This shouldn't matter
 to you now (as you're not relying on anything apart from
 TBB), but is more encouragement to try out AWS before
 you _have_ to in the next coursework.
+
+When I build your code, I will not be using your makefiles,
+and will be compiling your .cpp files directly. There will
+be a copy of TBB 4.2 available in the environment that your
+code will use, but exactly how that happens is opaque to
+you.
+
 
 Getting a github account
 ------------------------
@@ -82,7 +85,7 @@ place. To get access (do this now):
   with the title "[HPCE-github-request]". The body should
   consist of your github id and your imperial login, so
   something like:
-  
+
       github: m8pple
       imperial: dt10
 
@@ -96,39 +99,199 @@ doesn't work, I will also be getting people to do a blackboard
 submission as backup so I get the code. However, I did this
 for the first time last year, and it worked fine._
 
-Getting TBB
------------
+Setting up TBB
+--------------
 
+_Note: This section is new for this year, as setting up TBB
+was confusing for some students before. All the commands
+are based on ones I've types, but let me know if there
+are improvements to be made._
 
+First get the CW3 files and move into that directory:
 
-Initial Build
--------------
+    git clone TODO
+    cd hpce-2015-cw3
 
-Included in this package is a `makefile`, which may get you
-started in posix, and `makefile.mk`, which will allow you
-to get started in windows with `nmake` (the `make` that comes
-with visual studio). Note that `nmake` is much less powerful
-than GNU `make`, and cannot do many of the more advanced
-things such as parallel build, or using eval to create
-rules at make-time.
+To check your TBB setup, there is a small program called
+`src/test_tbb.cpp`. The build command is set up as (linux/cygwin/mingw):
 
+    make bin/test_tbb
 
-Once you have got TBB installed (the [lecture notes](http://cas.ee.ic.ac.uk/people/dt10/teaching/2014/hpce/hpce-lec6-introducing-tbb.pdf)
-may help, or you can use your package manager), to get things
-to compile in windows, you should drop into a visual studio
-command prompt, then do:
+or (visual studio command-line:
 
-    nmake -f makefile.mk all
+    nmake -f makefile.mk bin/test_tbb
 
-For linux you should be able to use:
+but you'll probably need to customise the build a
+bit, depending on your environment and installation/
 
-    make all
+### Linux (where you are root)
 
-When I build your code, I will not be using your makefiles,
-and will be compiling your .cpp files directly. There will
-be a copy of TBB 4.2 available in the environment that your
-code will use, but exactly how that happens is opaque to
-you.
+Use your package manager to install TBB. For example, if
+you are in Ubuntu or Debian, use:
+
+    sudo apt-cache search tbb
+
+to find the available packages, then install them. Make
+sure you also include the "dev" packages. A typical
+installation on Ubuntu 14 would be:
+
+    sudo apt-get install libtbb-dev libtbb2
+
+(I have no idea where the "2" comes from, it just seems
+to be needed).
+
+You should then be able to find the headers and libraries
+in standard system places. On my Ubuntu, I found them at:
+
+    # Headers
+    ls /usr/include/tbb
+    # Libraries (compile-time and run-time)
+    ls /usr/lib/libtbb.so
+
+If you are lucky, then you will be able to build straight
+off:
+
+    make bin/test_tbb
+    bin/test_tbb
+
+Otherwise you may need to manually set paths:
+
+    make bin/test_tbb TBB_INC_DIR=<PathToHeaders> TBB_LIB_DIR=<PathToLibraries>
+
+_Note: Make sure that <PathToHeaders> does not contain the final
+`tbb`._
+
+Once this builds, you may want to edit the makefile in
+order to hard-code the two variables (though it is up to you).
+
+When you try running it, you may also need to explicitly tell the loader where
+to look for run-time libraries:
+
+    export LD_LIBRARY_PATH=<AbsolutePathToLibraries>
+    bin/test_tbb
+
+_Note: The path to LD_LIBRARY_PATH needs to be absolute, rather than
+relative (remember the same problem occurred with `--prefix` in CW2)._
+
+### Cygwin32 / MinGW / Linux (Where you are not root)
+
+_Note: I don't know of a way to make this work in cygwin64 at the moment._
+
+For cygwin32 you'll need a slightly patched version of TBB, which is
+available here:
+
+    http://cas.ee.ic.ac.uk/people/dt10/teaching/2015/hpce/cw3/tbb42_20140601oss_src_cygwin.tgz
+
+For other platforms I'd suggest getting the version off the web-site.
+
+Build steps should be:
+
+    wget http://cas.ee.ic.ac.uk/people/dt10/teaching/2015/hpce/cw3/tbb42_20140601oss_src_cygwin.tgz
+    tar -xf tbb42_20140601oss_src_cygwin.tgz
+    cd tbb42_20140601oss
+    make -j 4 # OMG, parallelism!
+    cd ..
+
+If you now look around, you should be able to find the various directories:
+
+    # The include files
+    ls */include/tbb/*.h
+    # The compile-time libraries (cygwin)
+    ls */build/*/*.dll.a
+    # The run-time libraries (cgwin)
+    ls */build/*_release/*.dll
+    # The compile-time and run-time libraries (linux)
+    ls */build/*_release/*.so
+
+The paths to these things are what you need to in order to build. For
+example, in my cygwin it was:
+
+    make bin/test_tbb TBB_INC_DIR=tbb42_20140601oss/include TBB_LIB_DIR=tbb42_20140601oss/build/cygwin_ia32_gcc_cc4.9.3_newlib_release
+
+_Note: the include directory path should not include the final `tbb` component._
+
+Once this builds, you may want to edit the makefile in
+order to hard-code the two variables.
+
+If you now try running:
+
+    bin/test_tbb
+
+you will probably see an error message like:
+
+    <SomePath>/hpce-2015-cw3/bin/test_tbb.exe: error while loading shared libraries:
+      libtbb.dll: cannot open shared object file: No such file or directory
+
+There are two common solutions. First, add the directory containing
+the dll to your path:
+
+    export PATH=$PATH:$(pwd)/tbb42_20140601oss/build/PATH_TO_YOUR_RUN_TIME_LIBRARIES/
+
+or copy the the dll to the same directory as the binaries:
+
+    cp tbb42_20140601oss/build/PATH_TO_YOUR_RUN_TIME_LIBRARIES/*.dll bin
+
+You should now be able to run the program, and all your cores
+should light up.
+
+### Visual Studio (Windows, naturally)
+
+For visual studio builds it is easiest to work
+on the command line (though of course, I would say that).
+
+Rather than building from source, I suggest you
+download the windows binary builds from the TBB
+website. Once you unzip it you'll find a directory
+structure that contains:
+
+- Header files in `include`
+
+- Compile-time libraries in `lib`
+
+- Run-time libraries in `bin`
+
+Depending on which processor you have (ia32 vs intel64), and which version
+of visual studio you have (vc10, vc11, vc12), you should choose the
+appropriate version of TBB. For example I have Visual Studio
+2010 installed, so I started a command prompt using:
+
+ - Start
+ - Microsoft Visual Studio 2010
+ - Visual Studio Tools
+ - Visual Studio Command Prompt (2010)
+
+I then get a console that explicitly tells me that I'm running
+the x86 (32-bit) version of the 2010 tools.
+
+I chose to unzip TBB into `tbb_win`, so that means my paths
+for this toolchain are:
+
+- Headers: `tbb_win\include`
+
+- Compile-time libraries: `tbb_win\lib\ia32\vc10`
+
+- Run-time libraries: `tbb_win\bin\ia32\vc10`
+
+The magic compilation incantation for me was:
+
+    nmake -f makefile.mk bin\test_tbb.exe TBB_INC_DIR=tbb_win\include TBB_LIB_DIR=tbb_win\lib\ia32\vc10
+
+but you'll want to adjust for your environment. Once
+it's setup, you may want to adjust the makefile.
+
+In order to run, you'll need to make sure that
+`tbb.dll` can be found when the program starts. Techniques
+include copying the dll to the bin directory:
+
+    copy tbb_win\YOUR_CPU\YOUR_TOOLS\tbb.dll bin
+
+copying it to the current directory:
+
+    copy tbb_win\YOUR_CPU\YOUR_TOOLS\tbb.dll .
+
+or adding it to the path:
+
+    setenv PATH=%PATH%;ABSOLUTE_PATH_TO_THE_DLL_DIRECTORY
 
 The fourier transform framework
 -------------------------------
@@ -146,7 +309,7 @@ implementations, and two programs:
    simple tests on a given transform to check it works.
    The level of acceptable error in the results is
    defined as 1e-9 (which is quite high).
-   
+
 2. time_fourier_transform, which will time a given
    transform for increasing transform sizes with a given
    level of allowed parallelism.
@@ -317,7 +480,7 @@ one. For example, if you currently have `hpce::my_class`:
 	    ...
 	  };
 	};
-	
+
 you could get it into a new namespace called bobble, by
 changing it to:
 
@@ -328,7 +491,7 @@ changing it to:
 		};
 	  };
 	};
-	
+
 which would result in a class with the name `hpce::bobble::my_class`.
 
 Add your new file to the set of objects (either by adding
@@ -369,7 +532,7 @@ make very sure that you have renamed everything within
 `src/your_login/direct_fourier_transform_parfor.cpp` to the
 new name. Also make sure that the factory function is declared
 as `std::shared_ptr<fourier_transform> hpce::your_login::Create_direct_fourier_transform_parfor()`,
-both in `src/your_login/direct_fourier_transform_parfor.cpp`, and in 
+both in `src/your_login/direct_fourier_transform_parfor.cpp`, and in
 `src/fourier_transform_register_factories.cpp` (particularly if you get a linker error).
 
 ### Add the parallel_for loop
@@ -458,7 +621,7 @@ This would be a case of a data-race condition, which is
 why you should never have two threads sharing the same
 memory.
 
-### Create and register a new class 
+### Create and register a new class
 
 Copy `src/fast_fourier_transform.cpp` into a new
 file called `src/your_login/fast_fourier_transform_taskgroup.cpp`.
@@ -540,11 +703,11 @@ could say:
 
     // Our iterations space is over the unsigneds
     typedef tbb::blocked_range<unsigned> my_range_t;
-    
+
     // I want to iterate over the half-open space [i,j),
     // and the parallel chunk size should be K.
     my_range_t range(i,j,K);
-    
+
     // This will apply my function over the half-open
     // range [chunk.begin(),chunk.end) sequentially.
     auto f=[&](const my_range_t &chunk){
@@ -552,7 +715,7 @@ could say:
             y[i]=myLoop(i);
         }
     };
-    
+
 We now have the choice of executing it directly:
 
     f(range); // Apply f over range [i,j) sequentially
@@ -581,7 +744,7 @@ at run-time. So if I choose an environment variable called HPCE_X, I could
 create a C++ program `read_x`:
 
     #include <cstdlib>
-    
+
     int main()
     {
         char *v=getenv("HPCE_X");
@@ -592,21 +755,21 @@ create a C++ program `read_x`:
         }
         return 0;
     }
-    
+
 then on the command line I could do:
 
     > ./read_x
-    
+
       HPCE_X is not set.
-   
+
     > export HPCE_X=wibble
     > ./read_x
-    
+
       HPCE_X = wibble
-    
+
     > export HPCE_X=100
     > ./read_x
-    
+
       HCPE_X = 100
 
 Environment variables are a way of defining ambient properties,
@@ -663,7 +826,7 @@ then the work is split down to individual tasks, so the run-time
 should be very similar to the original, while if we do:
 
     export HPCE_FFT_RECURSION_K=16
-    
+
 then the implementation will stop parallel recursion for
 at a size of 16, and switch to serial recursion (i.e. normal
 function calls).
@@ -735,8 +898,8 @@ So within each chunk [i,j) we need to:
 Possible factors of K are easy to choose in this case,
 because m is always a power of two, so K can be
 any power of two less than or equal to m (including K=1).
-	
-### Create and register a new class 
+
+### Create and register a new class
 
 Create a new class based on `src/fast_fourier_transform.cpp`, with:
 - File name: `src/your_login/fast_fourier_transform_parfor.cpp`
@@ -805,7 +968,7 @@ fruit). Particular things to consider are:
 - There is some overhead involved in the serial version
   because it is radix2 (i.e. there is a base-case where n==2).
   You may want to look at stopping sequential splitting when n==4.
-  
+
 - The timing program measures a forward and then backwards
   transform. Are there any serial bottlenecks that can be
   removed, and if so, what chunk size should be used?
@@ -828,7 +991,7 @@ naturally be doing. Particular parameters to look at are:
 
 - Number of processors versus execution time. If you double
   the processor count, is it twice as fast?
-  
+
 - The various values of K versus execution time. You would
   typically expect a bathtub curve, where K=1 is very slow
   due to parallel overhead, and K=max is slow because there
@@ -849,7 +1012,7 @@ example, something like:
         export HPCE_FFT_RECURSION_K=$K;
         ./time_fourier_transform hpce.your_login.fast_fourier_transform_taskgroup
     end
-    
+
 So formally I require nothing from you to demonstrate
 experiments in scaling. However, I encourage you to commit
 and submit a few notes or documents about what you did,

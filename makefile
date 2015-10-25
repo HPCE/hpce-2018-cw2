@@ -9,11 +9,11 @@ LDLIBS = -lm -ltbb
 # Turn on optimisations
 CPPFLAGS += -O2
 
-# TODO : Indicate where you have put the TBB installer
-TBB_DIR = <where-is-it?>
-TBB_INC_DIR = $(TBB_DIR)/include
-# TODO: Choose the correct library for your build
-TBB_LIB_DIR = $(TBB_DIR)/lib/intel64/gcc4.4
+# TODO : Where are the TBB headers?
+TBB_INC_DIR ?= /usr/local/include
+# TODO: Where are the TBB compile time libraries?
+# e.g. libtbb.so, tbb.lib, or tbb.dll.a
+TBB_LIB_DIR ?= /usr/local/lib
 
 CPPFLAGS += -I $(TBB_INC_DIR)
 LDFLAGS += -L $(TBB_LIB_DIR)
@@ -26,7 +26,7 @@ FOURIER_IMPLEMENTATION_OBJS =  src/fast_fourier_transform.o	src/direct_fourier_t
 
 FOURIER_OBJS = $(FOURIER_CORE_OBJS) $(FOURIER_IMPLEMENTATION_OBJS)
 
-bin/test_tbb : src/test_tbb
+bin/test_tbb : src/test_tbb.cpp
 	-mkdir -p bin
 	$(CXX) $(CPPFLAGS) $^ -o $@ $(LDFLAGS) $(LDLIBS)
 
