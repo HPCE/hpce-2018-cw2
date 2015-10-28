@@ -1,3 +1,13 @@
+I managed to keep this repo private past the official release date,
+so to make sure there are still two clear weeks to work on it, I'm
+pushing the submission date back by two days to:
+
+     Wed Nov 11th, 22:00
+     
+The following one I will keep on schedule (Monday submission),
+and will actually just prepare and release it this week. No
+real point keeping the first four CWs private.
+
 0. Overview
 ===========
 
