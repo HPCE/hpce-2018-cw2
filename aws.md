@@ -3,8 +3,8 @@ Things to note about AWS
 
 First AWS is a commercial service, and they are in the
 business of charging people money for access. This
-course relies either on free instances, or on the $100
-that I give you, but be aware that
+course relies either on free instances, or on the $35 dollars
+that Amazon give you (https://aws.amazon.com/education/awseducate/), but be aware that
 there are consequences of leaving instances turned on
 for long periods of time. Each type of instance
 [costs money](http://aws.amazon.com/ec2/pricing/) per hour.
@@ -53,7 +53,7 @@ which gives you certain advantages:
 The t2.micro instances are great for checking compilation
 and automation, as you don't need to worry about cost.
 
-Any other instances will eat into your $100, so you need
+Any other instances will eat into your $35, so you need
 to be a bit careful about managing them. Things to
 note are:
 
@@ -78,8 +78,8 @@ Don't start working with a GPU or large instance unless
 you know you'll be able to spend a reasonable amount of
 time with it, and use cheaper instances, lab/personal
 machines and VMs to test build automation, compilation, and
-testing whenever possible. Though if you consider $100 at $0.65
-an hour, you're looking at 150+ hours, so there is plenty there.
+testing whenever possible. Though if you consider $35 at $0.65
+an hour, you're looking at 50+ hours, so there is plenty there.
 
 Best practises for using AWS
 ----------------------------
@@ -107,7 +107,7 @@ and create an AWS account.
 
 It will ask you for a credit or debit card, but this
 will not be charged if you only use free instances,
-and/or stay within the $100 credit you'll get. As
+and/or stay within the $35 credit you'll get. As
 I mentioned above, this is real money, but as long
 as you manage your instances it won't cost you
 anything.
