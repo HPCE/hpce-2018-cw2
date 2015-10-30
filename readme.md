@@ -109,6 +109,8 @@ doesn't work, I will also be getting people to do a blackboard
 submission as backup so I get the code. However, I did this
 for the first time last year, and it worked fine._
 
+[Highly topical](http://xkcd.com/1597/)
+
 Setting up TBB
 --------------
 
