@@ -6,6 +6,7 @@
 #include <complex>
 #include <functional>
 #include <memory>
+#include <stdexcept>
 
 namespace hpce
 {

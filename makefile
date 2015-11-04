@@ -4,7 +4,7 @@
 CPPFLAGS = -I include -Wall -std=c++11
 LDFLAGS =
 # -lm to bring in unix math library, -ltbb to bring in tbb
-LDLIBS = -lm -ltbb
+LDLIBS = -lm -ltbb -lrt
 
 # Turn on optimisations
 CPPFLAGS += -O2
