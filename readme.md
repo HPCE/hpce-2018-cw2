@@ -121,7 +121,7 @@ are improvements to be made._
 
 First get the CW3 files and move into that directory:
 
-    git clone TODO
+    git clone https://github.com/HPCE/hpce-2015-cw3
     cd hpce-2015-cw3
 
 To check your TBB setup, there is a small program called
