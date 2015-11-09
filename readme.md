@@ -452,6 +452,16 @@ This is not the only form of `parallel_for`, but it is
 the easiest and most direct. Other forms allow for
 more efficient execution, but require more thought.
 
+_Note: I've been inconsistent between the use of `unsigned` as
+used in this document, and `size_t` as used in the fourier
+transform framework. Really I should have chosen one of `size_t`
+or `unsigned` everywhere, as we might have a 32-bit `unsigned`
+but a 64-bit `size_t`. I'm not going to update now, as I don't
+want to make large-scale changes.
+Thanks to @raymond-williams in (Issue 7)[https://github.com/HPCE/hpce-2015-cw3/issues/7].
+TODO: update post-deadline.
+_
+
 Using tbb::parallel_for in the fourier transform
 ------------------------------------------------
 
@@ -703,7 +713,7 @@ parallel task should be. There is an alternate form
 of parallel_for, which describes a chunked iteration
 space:
 
-    tbb::parallel_for(tbb::blocked_range<unsigned>(i,j,K), const blocked_range<int> &chunk){
+    tbb::parallel_for(tbb::blocked_range<unsigned>(i,j,K), [&](const tbb::blocked_range<unsigned> &chunk){
         for(unsigned i=chunk.begin(); i!=chunk.end(); i++ ){
             y[i]=myLoop(i);
         }
@@ -713,7 +723,7 @@ this is still equivalent both to the original loop, but
 now we have more control. If we unpack it a bit, we
 could say:
 
-    // Our iterations space is over the unsigneds
+    // Our iteration space is over the unsigneds
     typedef tbb::blocked_range<unsigned> my_range_t;
 
     // I want to iterate over the half-open space [i,j),
