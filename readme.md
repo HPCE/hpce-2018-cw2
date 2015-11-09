@@ -121,7 +121,7 @@ are improvements to be made._
 
 First get the CW3 files and move into that directory:
 
-    git clone TODO
+    git clone https://github.com/HPCE/hpce-2015-cw3
     cd hpce-2015-cw3
 
 To check your TBB setup, there is a small program called
@@ -134,7 +134,7 @@ or (visual studio command-line:
     nmake -f makefile.mk bin/test_tbb
 
 but you'll probably need to customise the build a
-bit, depending on your environment and installation/
+bit, depending on your environment and installation.
 
 ### Linux (where you are root)
 
@@ -331,11 +331,11 @@ makefile, or some other mechanism), then you should
 be able to test and time the two existing transforms.
 For example, you can do:
 
-    test_fourier_transform
+    bin/test_fourier_transform
 
 which will list the two existing transforms, and:
 
-    time_fourier_transform hpce.fast_fourier_transform
+    bin/time_fourier_transform hpce.fast_fourier_transform
 
 to see the effect of increasing transform size on
 execution time (look in `time_fourier_transform.cpp` to
