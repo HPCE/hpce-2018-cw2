@@ -458,8 +458,7 @@ transform framework. Really I should have chosen one of `size_t`
 or `unsigned` everywhere, as we might have a 32-bit `unsigned`
 but a 64-bit `size_t`. I'm not going to update now, as I don't
 want to make large-scale changes.
-Thanks to @raymond-williams in #7.
-
+Thanks to @raymond-williams in (Issue 7)[https://github.com/HPCE/hpce-2015-cw3/issues/7].
 TODO: update post-deadline.
 _
 
