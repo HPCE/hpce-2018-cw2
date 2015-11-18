@@ -34,7 +34,7 @@ _Dislaimer: Never write your own fourier transform for production
 use. Everything you do here will be slower and less accurate than
 existing FFT libraries._
 
-1. Evironment and setup
+1. Environment and setup
 =======================
 
 Choose a Target Environment
@@ -121,7 +121,7 @@ are improvements to be made._
 
 First get the CW3 files and move into that directory:
 
-    git clone TODO
+    git clone https://github.com/HPCE/hpce-2015-cw3
     cd hpce-2015-cw3
 
 To check your TBB setup, there is a small program called
@@ -134,7 +134,7 @@ or (visual studio command-line:
     nmake -f makefile.mk bin/test_tbb
 
 but you'll probably need to customise the build a
-bit, depending on your environment and installation/
+bit, depending on your environment and installation.
 
 ### Linux (where you are root)
 
@@ -331,11 +331,11 @@ makefile, or some other mechanism), then you should
 be able to test and time the two existing transforms.
 For example, you can do:
 
-    test_fourier_transform
+    bin/test_fourier_transform
 
 which will list the two existing transforms, and:
 
-    time_fourier_transform hpce.fast_fourier_transform
+    bin/time_fourier_transform hpce.fast_fourier_transform
 
 to see the effect of increasing transform size on
 execution time (look in `time_fourier_transform.cpp` to
@@ -467,8 +467,8 @@ Using tbb::parallel_for in the fourier transform
 
 The framework is designed to support multiple fourier
 transforms which you can select between, so we'll
-need a way of distuinguishing your transform from
-anyone elses (in principle I should be able to create
+need a way of distinguishing your transform from
+anyone else's (in principle I should be able to create
 one giant executable containing everyone in the
 class's transforms). The basic framework uses the namespace
 `hpce`, but your classes will live in the namespace
@@ -702,7 +702,7 @@ true work is scaling as O(n^2), while the potential overhead
 due to parallelism is scaling at O(n). Putting numbers on
 this, if we assume t_c is the cost per data-point, and
 t_p is the extra overhead per parallel task, then the overall
-cost is t_p n + t_c n^2. Asmptotically this becomes O(n^2),
+cost is t_p n + t_c n^2. Asymptotically this becomes O(n^2),
 but for finite sizes we know that t_p >> t_c (by a factor
 of around 1000), so for n~1000 the overhead will equal the
 actual compute time.
@@ -835,7 +835,7 @@ you always want enough tasks to keep the processors occupied
 
 Our recursive parallel FFT is currently splitting down to
 individual tasks, which goes completely against the
-TBB advice about the minimimum work per task.
+TBB advice about the minimum work per task.
 
 Go back into `src/your_login/fast_fourier_transform_taskgroup.cpp`
 and make the base-case adjustable using the environment variable
@@ -984,7 +984,7 @@ and apply any optimisations you think reasonable (I'm not
 talking about low-level tweaks, these should be low-hanging
 fruit). Particular things to consider are:
 
-- You may wish to stop creating seperate tasks during the
+- You may wish to stop creating separate tasks during the
   splitting, once the sub-tasks drop below a certain size.
 
 - There is some overhead involved in the serial version
@@ -998,7 +998,7 @@ fruit). Particular things to consider are:
 To re-iterate, the aim here is not low-level optimisation and
 tweaking, it is for tuning and re-organising at a high-level,
 while keeping reasonably readable and portable code. By applying
-these techniqes, I got about a 6 times speed-up over the original
+these techniques, I got about a 6 times speed-up over the original
 code using a 8-core (hyper-threaded) machine for largish n.
 
 9. Measuring execution time and scalability
@@ -1080,7 +1080,7 @@ remote repository](git.md), making sure all the source files have
 been staged and added. (You can do a push whenever you
 want as you go (it's actually a good idea), but make sure
 you do one for "submission"). You may want to do a "clone" into
-a seperate directory to make sure that everything has
+a separate directory to make sure that everything has
 made it.
 
 After pushing to your private remote repository,
@@ -1089,5 +1089,5 @@ any binary files (executables, objects)
 
 I would suggest compiling and running your submission
 in AWS, just to get the feel of it. A correctly written
-submission should compile anywhere, with no real depencency
+submission should compile anywhere, with no real dependency
 on the environment, but it is good to try things out.
