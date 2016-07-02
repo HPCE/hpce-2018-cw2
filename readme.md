@@ -1,19 +1,15 @@
-I managed to keep this repo private past the official release date,
-so to make sure there are still two clear weeks to work on it, I'm
-pushing the submission date back by two days to:
+This coursework is due on:
 
-     Wed Nov 11th, 22:00
-     
-The following one I will keep on schedule (Monday submission),
-and will actually just prepare and release it this week. No
-real point keeping the first four CWs private.
+    Mon Oct 31st at 22:00
+
+Submisssion is via github.
 
 0. Overview
 ===========
 
 This coursework explores parallelism using threaded-building
-blocks. You should (if you're doing it right), see at least some
-examples of _linear speedup_ here, i.e. the performance
+blocks in a bit more detail. You should see _linear speedup_ here
+in a slightly more complex example than in CW1, i.e. the performance
 rises in proportion to the number of CPU cores.
 
 This distribution contains a basic object framework for creating
@@ -34,276 +30,44 @@ _Dislaimer: Never write your own fourier transform for production
 use. Everything you do here will be slower and less accurate than
 existing FFT libraries._
 
+You may notice that this used to be CW3 in previous years, but is now CW2. This is
+to reflect the change in order and emphasis compared to previous years.
+The older matlab experiment (which was awesome, but no-one
+liked matlab) has disappeared in favour of the very
+simple TBB intro in CW1, with this experiment to embed
+the TBB approach and explore it in a bit more detail.
+
 1. Environment and setup
 =======================
 
 Choose a Target Environment
 ---------------------------
 
-You can download Threaded Building Blocks from the [TBB Website](https://www.threadingbuildingblocks.org/)
-or it is available for many package managers
-
-At the time of writing the stable version is 4.2, which is what
-I will be using in the tests for the coursework. That said, I have no
-expectations of incompatibility with the later version which I now
-see is available. You have the choice of downloading and building them
-from source (you have knowledge of how to do that via configure/make), or you
-can install the binary packages on your machine.
-
-The target environment for this coursework is
-Ubuntu Server 14.04, specifically the Amazon AWS AMI
-version of Ubuntu 14.04. However, Ubuntu in a
-virtual machine should be almost identical, and
-most linuxes (Linii?) will work fine. TBB also
-works well under Visual Studio, cygwin32, and mingw, and
-according to previous students under MacOS as well - part
-of the point of using TBB is that it has good
-cross-platform support.
-The only common platform I know where it _doesn't_
-work is cygwin64.
-
-What you choose to do the
-development in is up to you, but the assessed compilation
-and evaluation will be done under Ubuntu in AWS. My plan
-is to use a [c4.8xlarge](http://aws.amazon.com/ec2/instance-types/)
+You can select your environement in a similar way to CW1,
+but the assessed compilation and evaluation will be done
+under Ubuntu in AWS. My plan is to use a [c4.8xlarge](http://aws.amazon.com/ec2/instance-types/)
 instance, but you certainly shouldn't optimise your code
 specifically for that machine. This shouldn't matter
 to you now (as you're not relying on anything apart from
-TBB), but is more encouragement to try out AWS before
-you _have_ to in the next coursework.
+TBB), but is more encouragement to [try out AWS](aws.md) before
+you _have_ to later on.
 
-When I build your code, I will not be using your makefiles,
-and will be compiling your .cpp files directly. There will
-be a copy of TBB 4.2 available in the environment that your
-code will use, but exactly how that happens is opaque to
-you.
+Github accounts
+---------------
 
+Submission will be via github, so this time you'll need
+to actually work with your private repository. I have created
+you a private repository again, but this time it will be empty.
+It is up to you `clone` a local copy of the master repository,
+then `push` it back up to your private repository. There
+are more details on this in the [brief git intro](git.md).
 
-Getting a github account
-------------------------
-
-Submission will be via github, so one thing you need
-to do is become part of the HPCE github organisation. This
-will give you access to a private repository that you can
-push to, and I can pull from. During submission I will be
-doing a git clone of your repository, then building it in
-place. To get access (do this now):
-
-- Get a github account (if you don't have one).
-- Note down your github id and your imperial login (e.g. mine is dt10).
-- Send an email to me, from an Imperial email account,
-  with the title "[HPCE-github-request]". The body should
-  consist of your github id and your imperial login, so
-  something like:
-
-      github: m8pple
-      imperial: dt10
-
-I will then add you to the HPCE organisation, and you will
-get a private repository. I'll be doing this manually and in
-batches, so it may take a day or so to turn it around. So
-do it when you read this.
-
-_Note: Again, it is not a disaster if submission via github
-doesn't work, I will also be getting people to do a blackboard
+_Note: It is not a disaster if submission via github
+doesn't work, as I will also be getting people to do a blackboard
 submission as backup so I get the code. However, I did this
-for the first time last year, and it worked fine._
+for the last two years, and it worked fine._
 
 [Highly topical](http://xkcd.com/1597/)
-
-Setting up TBB
---------------
-
-_Note: This section is new for this year, as setting up TBB
-was confusing for some students before. All the commands
-are based on ones I've types, but let me know if there
-are improvements to be made._
-
-First get the CW3 files and move into that directory:
-
-    git clone https://github.com/HPCE/hpce-2015-cw3
-    cd hpce-2015-cw3
-
-To check your TBB setup, there is a small program called
-`src/test_tbb.cpp`. The build command is set up as (linux/cygwin/mingw):
-
-    make bin/test_tbb
-
-or (visual studio command-line:
-
-    nmake -f makefile.mk bin/test_tbb
-
-but you'll probably need to customise the build a
-bit, depending on your environment and installation.
-
-### Linux (where you are root)
-
-Use your package manager to install TBB. For example, if
-you are in Ubuntu or Debian, use:
-
-    sudo apt-cache search tbb
-
-to find the available packages, then install them. Make
-sure you also include the "dev" packages. A typical
-installation on Ubuntu 14 would be:
-
-    sudo apt-get install libtbb-dev libtbb2
-
-(I have no idea where the "2" comes from, it just seems
-to be needed).
-
-You should then be able to find the headers and libraries
-in standard system places. On my Ubuntu, I found them at:
-
-    # Headers
-    ls /usr/include/tbb
-    # Libraries (compile-time and run-time)
-    ls /usr/lib/libtbb.so
-
-If you are lucky, then you will be able to build straight
-off:
-
-    make bin/test_tbb
-    bin/test_tbb
-
-Otherwise you may need to manually set paths:
-
-    make bin/test_tbb TBB_INC_DIR=<PathToHeaders> TBB_LIB_DIR=<PathToLibraries>
-
-_Note: Make sure that <PathToHeaders> does not contain the final
-`tbb`._
-
-Once this builds, you may want to edit the makefile in
-order to hard-code the two variables (though it is up to you).
-
-When you try running it, you may also need to explicitly tell the loader where
-to look for run-time libraries:
-
-    export LD_LIBRARY_PATH=<AbsolutePathToLibraries>
-    bin/test_tbb
-
-_Note: The path to LD_LIBRARY_PATH needs to be absolute, rather than
-relative (remember the same problem occurred with `--prefix` in CW2)._
-
-### Cygwin32 / MinGW / Linux (Where you are not root)
-
-_Note: I don't know of a way to make this work in cygwin64 at the moment._
-
-For cygwin32 you'll need a slightly patched version of TBB, which is
-available here:
-
-    http://cas.ee.ic.ac.uk/people/dt10/teaching/2015/hpce/cw3/tbb42_20140601oss_src_cygwin.tgz
-
-For other platforms I'd suggest getting the version off the web-site.
-
-Build steps should be:
-
-    wget http://cas.ee.ic.ac.uk/people/dt10/teaching/2015/hpce/cw3/tbb42_20140601oss_src_cygwin.tgz
-    tar -xf tbb42_20140601oss_src_cygwin.tgz
-    cd tbb42_20140601oss
-    make -j 4 # OMG, parallelism!
-    cd ..
-
-If you now look around, you should be able to find the various directories:
-
-    # The include files
-    ls */include/tbb/*.h
-    # The compile-time libraries (cygwin)
-    ls */build/*/*.dll.a
-    # The run-time libraries (cgwin)
-    ls */build/*_release/*.dll
-    # The compile-time and run-time libraries (linux)
-    ls */build/*_release/*.so
-
-The paths to these things are what you need to in order to build. For
-example, in my cygwin it was:
-
-    make bin/test_tbb TBB_INC_DIR=tbb42_20140601oss/include TBB_LIB_DIR=tbb42_20140601oss/build/cygwin_ia32_gcc_cc4.9.3_newlib_release
-
-_Note: the include directory path should not include the final `tbb` component._
-
-Once this builds, you may want to edit the makefile in
-order to hard-code the two variables.
-
-If you now try running:
-
-    bin/test_tbb
-
-you will probably see an error message like:
-
-    <SomePath>/hpce-2015-cw3/bin/test_tbb.exe: error while loading shared libraries:
-      libtbb.dll: cannot open shared object file: No such file or directory
-
-There are two common solutions. First, add the directory containing
-the dll to your path:
-
-    export PATH=$PATH:$(pwd)/tbb42_20140601oss/build/PATH_TO_YOUR_RUN_TIME_LIBRARIES/
-
-or copy the the dll to the same directory as the binaries:
-
-    cp tbb42_20140601oss/build/PATH_TO_YOUR_RUN_TIME_LIBRARIES/*.dll bin
-
-You should now be able to run the program, and all your cores
-should light up.
-
-### Visual Studio (Windows, naturally)
-
-For visual studio builds it is easiest to work
-on the command line (though of course, I would say that).
-
-Rather than building from source, I suggest you
-download the windows binary builds from the TBB
-website. Once you unzip it you'll find a directory
-structure that contains:
-
-- Header files in `include`
-
-- Compile-time libraries in `lib`
-
-- Run-time libraries in `bin`
-
-Depending on which processor you have (ia32 vs intel64), and which version
-of visual studio you have (vc10, vc11, vc12), you should choose the
-appropriate version of TBB. For example I have Visual Studio
-2010 installed, so I started a command prompt using:
-
- - Start
- - Microsoft Visual Studio 2010
- - Visual Studio Tools
- - Visual Studio Command Prompt (2010)
-
-I then get a console that explicitly tells me that I'm running
-the x86 (32-bit) version of the 2010 tools.
-
-I chose to unzip TBB into `tbb_win`, so that means my paths
-for this toolchain are:
-
-- Headers: `tbb_win\include`
-
-- Compile-time libraries: `tbb_win\lib\ia32\vc10`
-
-- Run-time libraries: `tbb_win\bin\ia32\vc10`
-
-The magic compilation incantation for me was:
-
-    nmake -f makefile.mk bin\test_tbb.exe TBB_INC_DIR=tbb_win\include TBB_LIB_DIR=tbb_win\lib\ia32\vc10
-
-but you'll want to adjust for your environment. Once
-it's setup, you may want to adjust the makefile.
-
-In order to run, you'll need to make sure that
-`tbb.dll` can be found when the program starts. Techniques
-include copying the dll to the bin directory:
-
-    copy tbb_win\YOUR_CPU\YOUR_TOOLS\tbb.dll bin
-
-copying it to the current directory:
-
-    copy tbb_win\YOUR_CPU\YOUR_TOOLS\tbb.dll .
-
-or adding it to the path:
-
-    setenv PATH=%PATH%;ABSOLUTE_PATH_TO_THE_DLL_DIRECTORY
 
 The fourier transform framework
 -------------------------------
@@ -317,12 +81,12 @@ backwards transforms.
 In the src directory, there are two fourier transform
 implementations, and two programs:
 
-1. test_fourier_transform, which will run a number of
+1. `test_fourier_transform`, which will run a number of
    simple tests on a given transform to check it works.
    The level of acceptable error in the results is
    defined as 1e-9 (which is quite high).
 
-2. time_fourier_transform, which will time a given
+2. `time_fourier_transform`, which will time a given
    transform for increasing transform sizes with a given
    level of allowed parallelism.
 
@@ -367,100 +131,7 @@ intrinsic complexity.
 
 The file `src/direct_fourier_transform.cpp` contains a classic
 discrete fourier transform, which takes O(n^2) operations to
-do an n-point fourier transform. The structure of this
-code is essentially:
-
-    for a=0:n-1
-      out[a]=0;
-      for b=0:n-1
-        out[a]=out[a] + in[i] * exp(-i * 2*pi * a * b / n);
-      end
-    end
-
-This should remind you of roots of unity and such-like
-from way back when.
-
-Overview of tbb::parallel_for
------------------------------
-
-There are two loops here, with a loop-carried dependency
-through the inner loop, so a natural approach is to
-try to parallelise over the outer loop. In matlab this
-would be inefficient using parfor, except for very large
-transforms, but in TBB the overhead is fairly small.
-
-The parfor equivalent is given by tbb::parallel_for,
-which takes a functor (function-like object) and applies
-it over a loop. The simplest approach is to take a
-loop which looks like:
-
-    for(unsigned i=0;i<n;i++){
-      f(i);
-    }
-
-and turn it into:
-
-    tbb::parallel_for(0u, n, f);
-
-This approach works, but with C++11 lambda functions
-we can make it look nicer. So we can take:
-
-    for(unsigned i=0;i<n;i++){
-      y[i]=f(x[i]);
-    }
-
-and turn it into:
-
-    #include "tbb/parallel_for.h"
-
-    tbb::parallel_for(0u, n, [=](unsigned i){
-      y[i]=f(x[i]);
-    });
-
-If you have problems compiling this, and get loads of cryptic error
-messages, it may be because the types passed to the function
-don't agree. In particular, both the begin and end of the iteration
-range should have the same type. In the example above, `0u` has
-the type `unsigned`, so if `n` had the type `int`, there might
-be a type error (as the iteration type TI can't be both `int` and
-`unsigned`). To resolve it you can either make sure both parts
-have the same time:
-
-    tbb::parallel_for((unsigned)0, (unsigned)n, [=](unsigned i){
-          y[i]=f(x[i]);
-    });
-
-or you can explicitly state the iteration type:
-
-    tbb::parallel_for<unsigned>(0, n, [=](unsigned i){
-          y[i]=f(x[i]);
-    });
-
-
-Despite the way it initially appears, `parallel_for` is
-still a normal function, but we just happen to be passing
-in a variable which is code. The [=] syntax is introducing
-a lambda, in a very similar way to the @ syntax in matlab,
-so we could also do it in a much more matlab way:
-
-    auto loop_body = [=](unsigned i){
-      y[i]=f(x[i]);
-    };
-    tbb::parallel_for(0u, n, loop_body);
-
-This is not the only form of `parallel_for`, but it is
-the easiest and most direct. Other forms allow for
-more efficient execution, but require more thought.
-
-_Note: I've been inconsistent between the use of `unsigned` as
-used in this document, and `size_t` as used in the fourier
-transform framework. Really I should have chosen one of `size_t`
-or `unsigned` everywhere, as we might have a 32-bit `unsigned`
-but a 64-bit `size_t`. I'm not going to update now, as I don't
-want to make large-scale changes.
-Thanks to @raymond-williams in (Issue 7)[https://github.com/HPCE/hpce-2015-cw3/issues/7].
-TODO: update post-deadline.
-_
+do an n-point fourier transform. Classic 1st year maths :)
 
 Using tbb::parallel_for in the fourier transform
 ------------------------------------------------
@@ -487,10 +158,10 @@ There are five steps in this process:
 ### Creating the new fourier transform class
 
 Copy `src/direct_fourier_transform.cpp` into a new
-file called `src/your_login/direct_fourier_transform_parfor.cpp`.
+file called `src/your_login/direct_fourier_transform_parfor_inner.cpp`.
 Modify the new file so that the contained class is called
-`hpce::your_login::direct_fourier_transform_parfor`, and reports
-`hpce.your_login.direct_fourier_transform_parfor` from `name()`. Apart
+`hpce::your_login::direct_fourier_transform_parfor_inner`, and reports
+`hpce.your_login.direct_fourier_transform_parfor_inner` from `name()`. Apart
 from renaming, you don't need to change any functionality yet.
 
 To declare something in a nested namespace, simply
@@ -516,16 +187,15 @@ changing it to:
 
 which would result in a class with the name `hpce::bobble::my_class`.
 
-Add your new file to the set of objects (either by adding
-it to FOURIER_IMPLEMENTATION_OBJS in the makefile, or by
-adding it to your visual studio project), and check
-that it still compiles.
+Add your new file to the set of objects compiled into
+the executable by adding it to `FOURIER_IMPLEMENTATION_OBJS` in the `makefile`,
+and check that it still compiles.
 
 ### Register the class with the fourier framework
 
 As part of the modifications, you should have found
 a function at the bottom of the file called `std::shared_ptr<fourier_transform> Create_direct_fourier_transform()`,
-which you modified to `std::shared_ptr<fourier_transform> Create_direct_fourier_transform_parfor()`.
+which you modified to `std::shared_ptr<fourier_transform> Create_direct_fourier_transform_parfor_inner()`.
 This is the factory function, used by the rest of the
 framework to create transforms by name, without knowing
 how they are implemented.
@@ -544,31 +214,203 @@ registers the factory.
 At this point, you should find that your new implementation
 is listed if you build `test_fourier_transform` and do:
 
-    test_fourier_transform hpce.your_login.direct_fourier_transform_parfor
+    test_fourier_transform hpce.your_login.direct_fourier_transform_parfor_inner
 
 Hopefully your implementation still works, in so far as the
-execution will be identical.
+execution will be identical, but should still be correct.
 
 If your transform doesn't turn up at run-time, or the code won't compile,
 make very sure that you have renamed everything within
-`src/your_login/direct_fourier_transform_parfor.cpp` to the
+`src/your_login/direct_fourier_transform_parfor_inner.cpp` to the
 new name. Also make sure that the factory function is declared
-as `std::shared_ptr<fourier_transform> hpce::your_login::Create_direct_fourier_transform_parfor()`,
-both in `src/your_login/direct_fourier_transform_parfor.cpp`, and in
+as `std::shared_ptr<fourier_transform> hpce::your_login::Create_direct_fourier_transform_parfor_inner()`,
+both in `src/your_login/direct_fourier_transform_parfor_inner.cpp`, and in
 `src/fourier_transform_register_factories.cpp` (particularly if you get a linker error).
 
-### Add the parallel_for loop
+### Add the parallel_for loop to the **_inner_** loop
 
-You need to rewrite the outer loop in both `forwards_impl` and `backwards_impl`,
+You need to rewrite the inner loop in both `forwards_impl` and `backwards_impl`,
 using the transformation of for loop to `tbb::parallel_for` shown previously. I would
 suggest doing one, running the tests, and then doing the other. You'll
 need to make sure that you include the appropriate header for parallel_loop from
-TBB at the top of the file, so that the function can be found. The linker path
-will also need to be setup using whatever build tool you are using (e.g. the
-settings in visual studio, or LDFLAGS in a makefile).
+TBB at the top of the file, so that the function can be found.
 
 
-3. Using tbb::task_group in fast_fourier_transform
+4. Exploring the grain size of parallel_for
+===========================================
+
+We are now going to explore tuning the grain size,
+which is essentially adjusting the computation to
+parallel overhead ratio. This should provide much
+more explicit versions of the tradeoffs that you
+may have seen in the previous coursework.
+
+Partitioners and grain size
+---------------------------
+
+By default, `tbb::parallel_for` uses something called
+the `auto_partitioner`, which is used to [partition](https://www.threadingbuildingblocks.org/docs/help/reference/algorithms/partitioners.htm)
+your iteration space into parallel chunks. The auto-partitioner
+attempts to balance the number of parallel tasks created
+against the amount of computation at each iteration
+point. Internally it tries to split the iteration space
+up recursively into parallel chunks, and then switches
+to serial execution within each chunk once it has enough
+parallel tasks for the number of processors.
+
+We can explore this and control it by using manual
+grain size control, which explicitly says how big each
+parallel task should be. There is an alternate form
+of parallel_for, which describes a chunked iteration
+space:
+
+    tbb::parallel_for(tbb::blocked_range<unsigned>(i,j,K), [&](const tbb::blocked_range<unsigned> &chunk){
+        for(unsigned i=chunk.begin(); i!=chunk.end(); i++ ){
+            y[i]=myLoop(i);
+        }
+    }, tbb::simple_partitioner());
+
+this is still equivalent both to the original loop, but
+now we have more control. If we unpack it a bit, we
+could say:
+
+    // Our iteration space is over the unsigneds
+    typedef tbb::blocked_range<unsigned> my_range_t;
+
+    // I want to iterate over the half-open space [i,j),
+    // and the minimum parallel chunk size should be K.
+    my_range_t range(i,j,K);
+
+    // This will apply my function over the half-open
+    // range [chunk.begin(),chunk.end) sequentially.
+    auto f=[&](const my_range_t &chunk){
+        for(unsigned i=chunk.begin(); i!=chunk.end(); i++ ){
+            y[i]=myLoop(i);
+        }
+    };
+
+We now have the choice of executing it directly:
+
+    f(range); // Apply f over range [i,j) sequentially
+
+or in parallel with chunk size of K:
+
+    tbb::parallel_for(range, f, tbb::simple_partitioner());
+
+The final `tbb::simple_partitioner()` argument is telling
+TBB "I know what I am doing; I have decided that K is the
+best chunk size." We could alternatively leave it blank,
+which would default to the auto partitioner, which would
+tell TBB "I know that the chunk size should not be less than
+K, but if you want to do larger chunks, go for it.".
+
+Environment Variables
+---------------------
+
+We want to vary the chunk size, but we also want it to be
+user tunable for a specific machine. So we are going to allow the
+user to choose a value K at run-time using an environment variable.
+
+The function [`getenv`](http://www.cplusplus.com/reference/cstdlib/getenv/)
+allows a program to read [environment variables](http://en.wikipedia.org/wiki/Environment_variable)
+at run-time. So if I choose an environment variable called HPCE_X, I could
+create a C++ program `read_x`:
+
+    #include <cstdlib>
+
+    int main()
+    {
+        char *v=getenv("HPCE_X");
+        if(v==NULL){
+            printf("HPCE_X is not set.\n");
+        }else{
+            printf("HPCE_X = %s\n", v);
+        }
+        return 0;
+    }
+
+then on the command line I could do:
+
+    > ./read_x
+
+      HPCE_X is not set.
+
+    > export HPCE_X=wibble
+    > ./read_x
+
+      HPCE_X = wibble
+
+    > export HPCE_X=100
+    > ./read_x
+
+      HCPE_X = 100
+
+Environment variables are a way of defining ambient properties,
+and are often used for tuning the execution of program for the
+specific machine they are on (I'm not saying it's the best way,
+but it happens a lot). I used the "HPCE_" prefix as I want to
+try to avoid clashes with other programs that might want a
+variable called "X".
+
+### Add parameterisable chunking to your class
+
+Modify your implementation of `direct_fourier_transform_parfor_inner`
+to use a chunk size K, where K is either
+specified as a decimal integer using the environment
+variable `HPCE_DIRECT_INNER_K`, or if it is not set, you should use
+a sensible default. For example, if the user does:
+
+    export HPCE_DIRECT_INNER_K=16
+
+you would use a chunk size of 16 for the inner loop.
+
+You should think about what "sensible default" means: the TBB user
+guide gives [some guidance](https://www.threadingbuildingblocks.org/docs/help/tbb_userguide/Controlling_Chunking.htm)
+in the form of a "rule of thumb". Your rule of thumb
+should probably take into account the approximate amount
+of work per inner iteration point, so you don't want
+to choose K=1. However, you would like to eventually
+have _some_ parallelism, so you also can't choose a
+really large default K.
+
+**Task**: create a graph called `results/direct_outer_versus_k.pdf` which
+explores the performance of K versus time for n=[32,64,128,256,512].
+K should be on the x-axis, time on the y-axis, and each n is a different line.
+Time should extend up to 30 seconds per test run, which you can achieve with:
+
+    bin/time_fourier_transform hpce.direct_fourier_transform 0 30
+
+See the next sub-section before you start generating your graph.
+
+### (Optional, but recommended) CSV and pivots.
+
+
+
+
+2. Using tbb::parallel_for in direct_fourier_transform _properly_
+=================================================================
+
+You should be seeing very different performance as you scale K,
+and hopefully be developing an intuition that the inner loop
+is probably not where you want to accelerate.
+
+Create new implementation called `direct_fourier_transform_parfor_outer`
+(with all the associated files and factory setup), and parallelise
+over the outer loop.
+
+Be very careful to test your output, and don't blindly assume
+that things are correct. You may want to look carefully at
+what the two loops are doing, and how they interact:
+
+- Can you turn the accumulation into the array into accumulation into a scalar?
+
+- Think about the 2d iteration space and the dependencies.
+
+- Can you interchange the loops (iterate over a different dimension
+  of the iteration space as the outer loop)?
+
+
+4. Using tbb::task_group in fast_fourier_transform
 ==================================================
 
 The file `src/fast_fourier_transform.cpp` contains a radix-2
@@ -611,7 +453,7 @@ function as the starting point:
 After this code runs, we can't say anything about the
 values of x and y, as each one has been captured by
 reference (the [&]) but we don't know if they have been
-modified yet. It is is possible that zero, one, or
+modified yet. It is possible that zero, one, or
 both of the tasks have completed, so to rejoin the
 tasks and synchronise we need to do:
 
@@ -674,161 +516,6 @@ masses of overhead, but we are establishing a base-case here.
 As before, test the implementation to make sure it still
 works.
 
-4. Exploring the grain size of parallel_for
-===========================================
-
-We are now going to explore tuning the grain size,
-which is essentially adjusting the computation to
-parallel overhead ration.
-
-Partitioners and grain size
----------------------------
-
-By default, `tbb::parallel_for` uses something called
-the `auto_partitioner`, which is used to [partition](https://www.threadingbuildingblocks.org/docs/help/reference/algorithms/partitioners.htm)
-your iteration space into sequential segments. The auto-partitioner
-attempts to balance the number of parallel tasks created
-against the amount of computation at each iteration
-point. Internally it tries to split the iteration space
-up recursively into parallel chunks, and then switches
-to serial execution within each chunk once it has enough
-parallel tasks for the number of processors.
-
-In our direct FFT the amount of work within each parallel
-iteration will depend on the transform size, as the total
-cost is O(n^2), and the cost per inner loop iteration is
-O(n). As the transform gets larger, the total amount of
-true work is scaling as O(n^2), while the potential overhead
-due to parallelism is scaling at O(n). Putting numbers on
-this, if we assume t_c is the cost per data-point, and
-t_p is the extra overhead per parallel task, then the overall
-cost is t_p n + t_c n^2. Asymptotically this becomes O(n^2),
-but for finite sizes we know that t_p >> t_c (by a factor
-of around 1000), so for n~1000 the overhead will equal the
-actual compute time.
-
-We can explore this and control this by using manual
-grain size control, which explicitly says how big each
-parallel task should be. There is an alternate form
-of parallel_for, which describes a chunked iteration
-space:
-
-    tbb::parallel_for(tbb::blocked_range<unsigned>(i,j,K), [&](const tbb::blocked_range<unsigned> &chunk){
-        for(unsigned i=chunk.begin(); i!=chunk.end(); i++ ){
-            y[i]=myLoop(i);
-        }
-    }, tbb::simple_partitioner());
-
-this is still equivalent both to the original loop, but
-now we have more control. If we unpack it a bit, we
-could say:
-
-    // Our iteration space is over the unsigneds
-    typedef tbb::blocked_range<unsigned> my_range_t;
-
-    // I want to iterate over the half-open space [i,j),
-    // and the parallel chunk size should be K.
-    my_range_t range(i,j,K);
-
-    // This will apply my function over the half-open
-    // range [chunk.begin(),chunk.end) sequentially.
-    auto f=[&](const my_range_t &chunk){
-        for(unsigned i=chunk.begin(); i!=chunk.end(); i++ ){
-            y[i]=myLoop(i);
-        }
-    };
-
-We now have the choice of executing it directly:
-
-    f(range); // Apply f over range [i,j) sequentially
-
-or in parallel with chunk size of K:
-
-    tbb::parallel_for(range, f, tbb::simple_partitioner());
-
-The final `tbb::simple_partitioner()` argument is telling
-TBB "I know what I am doing; I have decided that K is the
-best chunk size." We could alternatively leave it blank,
-which would default to the auto partitioner, which would
-tell TBB "I know that the chunk size should not be less than
-K, but if you want to do larger chunks, go for it.".
-
-Environment Variables
----------------------
-
-We want to set a good chunk size, but we also want it to be
-user tunable for a specific machine. So we are going to allow the
-user to choose a value K at run-time using an environment variable.
-
-The function [`getenv`](http://www.cplusplus.com/reference/cstdlib/getenv/)
-allows a program to read [environment variables](http://en.wikipedia.org/wiki/Environment_variable)
-at run-time. So if I choose an environment variable called HPCE_X, I could
-create a C++ program `read_x`:
-
-    #include <cstdlib>
-
-    int main()
-    {
-        char *v=getenv("HPCE_X");
-        if(v==NULL){
-            printf("HPCE_X is not set.\n");
-        }else{
-            printf("HPCE_X = %s\n", v);
-        }
-        return 0;
-    }
-
-then on the command line I could do:
-
-    > ./read_x
-
-      HPCE_X is not set.
-
-    > export HPCE_X=wibble
-    > ./read_x
-
-      HPCE_X = wibble
-
-    > export HPCE_X=100
-    > ./read_x
-
-      HCPE_X = 100
-
-Environment variables are a way of defining ambient properties,
-and are often used for tuning the execution of program for the
-specific machine they are on (I'm not saying it's the best way,
-but it happens a lot). I used the "HPCE_" prefix as I want to
-try to avoid clashes with other programs that might want a
-variable called "X".
-
-### Create and register a new class
-
-Create a new class `src/your_login/direct_fourier_transform_chunked.cpp` based
-on `src/your_login/direct_fourier_transform_parfor.cpp`
-with class name `hpce::your_login::direct_fourier_transform_chunked`, and name
-`hpce.your_login.direct_fourier_transform_chunked`.
-
-
-### Add parameterisable chunking to your class
-
-Change the parfor loop to use a chunk size K, where K is either
-specified as a decimal integer using the environment
-variable `HPCE_DIRECT_OUTER_K`, or if it is not set, you should use
-a sensible default. For example, if the user does:
-
-    export HPCE_DIRECT_OUTER_K=16
-
-you would use a chunk size of 16 (which will work well for larger
-n, but less well as n becomes smaller).
-
-You should think about what "sensible default" means: the TBB user
-guide gives [some guidance](https://www.threadingbuildingblocks.org/docs/help/tbb_userguide/Controlling_Chunking.htm)
-in the form of a "rule of thumb". Your rule of thumb
-should probably take into account the size of the inner loop:
-remember that the work is O(n^2), and the work within each
-original parfor iteration is O(n). But on the other side,
-you always want enough tasks to keep the processors occupied
-(no matter how many there are), so you can't set the chunk size to K=n.
 
 5. Adjustable grain size for the FFT
 ====================================

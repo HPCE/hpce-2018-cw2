@@ -9,33 +9,33 @@ namespace hpce
 
 static std::map<std::string,fourier_transform_factory_t> s_factories;
 
-std::complex<double>  fourier_transform::root_of_unity(size_t n) const
+complex_t  fourier_transform::root_of_unity(size_t n) const
 {
 	const double pi2=6.283185307179586476925286766559;
 	double angle = pi2/n;
 	return complex_t(cos(angle), sin(angle));
 }
-	
+
 
 complex_vec_t fourier_transform::forwards(const complex_vec_t &in) const
 {
-	
+
 	size_t n=calc_padded_size(in.size());
 	complex_vec_t result(n);
-	
+
 	complex_t wn=root_of_unity(n);
-	
+
 	if(n==in.size()){
-		forwards_impl(n, wn, &in[0], 1, &result[0], 1);
+		forwards_impl(n, wn, &in[0], &result[0]);
 	}else{
 		complex_vec_t buffer(in);
 		buffer.resize(n, complex_t(0.0,0.0) );
-		forwards_impl(n, wn, &buffer[0], 1, &result[0], 1);
+		forwards_impl(n, wn, &buffer[0], &result[0]);
 	}
-	
+
 	return result;
 }
-	
+
 complex_vec_t fourier_transform::backwards(const complex_vec_t &in, size_t n) const
 {
 	if(n==0){
@@ -44,12 +44,12 @@ complex_vec_t fourier_transform::backwards(const complex_vec_t &in, size_t n) co
 		if(n>in.size())
 			throw std::invalid_argument("Output size must be less than or equal to input size.");
 	}
-		
+
 	complex_vec_t result(in.size());
-	
+
 	complex_t wn=root_of_unity(n);
-	backwards_impl(n, wn, &in[0], 1, &result[0], 1);
-	
+	backwards_impl(n, wn, &in[0], &result[0]);
+
 	result.resize(n);
 	return result;
 }
@@ -60,7 +60,7 @@ void fourier_transform::RegisterTransformFactory(std::string name, fourier_trans
 	auto it=s_factories.find(name);
 	if(it!=s_factories.end())
 		throw std::invalid_argument("Factory already registered with that name.");
-	
+
 	s_factories.insert(std::make_pair(name, factory));
 }
 
@@ -73,7 +73,7 @@ std::list<std::string> fourier_transform::GetTransformFactoryNames()
 		names.push_back(it->first);
 		++it;
 	}
-	
+
 	return names;
 }
 
@@ -83,7 +83,7 @@ std::shared_ptr<fourier_transform> fourier_transform::CreateTransform(const std:
 	auto it=s_factories.find(name);
 	if(it==s_factories.end())
 		throw std::invalid_argument("No factory registered with that name.");
-	
+
 	return it->second();
 }
 

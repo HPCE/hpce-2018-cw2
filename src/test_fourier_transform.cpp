@@ -64,25 +64,25 @@ static void testDCTransform(const fourier_transform *pTransform, size_t n)
 	std::stringstream acc;
 	acc<<"testDCTransform("<<pTransform->name()<<","<<n<<")";
 	s_currentTest=acc.str();
-	
+
 	complex_vec_t input(n, complex_t(1.0, 0.0));
 	complex_vec_t forward = pTransform->forwards(input);
-	
+
 	verifyEqual(forward[0], (complex_t)(double)n, "DC component is not n.");
-	
+
 	if(forward.size()==n){
 		// As long as the array has not been padded, all the other components should be zero
 		for(unsigned i=1;i<n;i++){
-			verifyClose(forward[i], complex_t(0.0), 1e-9, "AC component is non-zero.");
+			verifyClose(forward[i], complex_t(0.0), 1e-8, "AC component is non-zero.");
 		}
 	}
-	
+
 	complex_vec_t backward = pTransform->backwards(forward, n);
-	
+
 	verifyEqual(backward.size(), n, "Size of output does not match.");
 	for(unsigned i=1;i<n;i++){
 		// TODO : change to verifyClose
-		verifyClose(backward[i], input[i], 1e-9, "backwards(forwards(vec))!=vec .");
+		verifyClose(backward[i], input[i], 1e-8, "backwards(forwards(vec))!=vec .");
 	}
 }
 
@@ -92,14 +92,14 @@ static void testUniformRandom(const fourier_transform *pTransform, size_t n)
 	std::stringstream acc;
 	acc<<"testDCTransform("<<pTransform->name()<<","<<n<<")";
 	s_currentTest=acc.str();
-	
+
 	complex_vec_t input(n, 1.0);
 	for(unsigned i=0;i<n;i++){
 		input[i]=randomUniformComplex();
 	}
-	
+
 	complex_vec_t output = pTransform->backwards( pTransform->forwards(input) );
-	
+
 	for(unsigned i=0;i<n;i++){
 		verifyClose(output[i], input[i], 1e-9, " Non reversible transform.");
 	}
@@ -113,9 +113,9 @@ int main(int argc, char *argv[])
 	try{
 		// Put the system in a known state
 		s_urng=std::mt19937(1);
-		
+
 		fourier_transform::RegisterDefaultFactories();
-		
+
 		if(argc<=1){
 			auto names = fourier_transform::GetTransformFactoryNames();
 			auto it=names.begin();
@@ -125,14 +125,14 @@ int main(int argc, char *argv[])
 			}
 			return 1;
 		}
-		
+
 		std::string name(argv[1]);
 		std::shared_ptr<fourier_transform> transform=fourier_transform::CreateTransform(name);
-		
-		
+
+
 		/////////////////////////////////////////////////////////////////////////
 		// Begin the tests
-		
+
 		// Check the forward and backwards transform of pure DC.
 		for(unsigned i=1;i<=13;i++){
 			testDCTransform(transform.get(), 1u<<i);
@@ -142,7 +142,7 @@ int main(int argc, char *argv[])
 				testDCTransform(transform.get(), 1u<<i);
 			}
 		}
-		
+
 		// Generate random vectors
 		for(unsigned i=2;i<100;i++){
 			testUniformRandom(transform.get(), i);
@@ -152,9 +152,9 @@ int main(int argc, char *argv[])
 				testUniformRandom(transform.get(), randomUniformInt(1000000)+10);
 			}
 		}
-		
+
 		std::cout<<transform->name()<<" : Passed "<<s_totalPassed<<" out of "<<(s_totalFailed+s_totalPassed)<<" tests."<<std::endl;
-		
+
 		return s_totalFailed>0 ? 1 : 0;
 	}catch(std::exception &e){
 		std::cerr<<"Caught exception: "<<e.what()<<"\n";
