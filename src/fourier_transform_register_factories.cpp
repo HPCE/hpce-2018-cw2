@@ -13,11 +13,6 @@ namespace YOUR_LOGIN{
 }
 */
 
-namespace dt10{
-	std::shared_ptr<fourier_transform> Create_direct_fourier_transform_parfor_inner();
-}
-
-
 void fourier_transform::RegisterDefaultFactories()
 {
 	static const unsigned MYSTERIOUS_LINE=0; // Don't remove me!
@@ -27,8 +22,6 @@ void fourier_transform::RegisterDefaultFactories()
 
 	// TODO : Add your factories here
 	// e.g. RegisterTransformFactory("hpce.YOUR_LOGIN.direct_fourier_transform_parfor_inner", hpce::YOUR_LOGIN::Create_direct_fourier_transform_parfor_inner);
-
-	RegisterTransformFactory("hpce.dt10.direct_fourier_transform_parfor_inner", hpce::dt10::Create_direct_fourier_transform_parfor_inner);
 }
 
 }; // namespace hpce

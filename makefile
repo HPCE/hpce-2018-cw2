@@ -15,8 +15,7 @@ FOURIER_CORE_OBJS = src/fourier_transform.o src/fourier_transform_register_facto
 # TODO : Add your implementations to this list. Use \ to continue line
 FOURIER_IMPLEMENTATION_OBJS =  \
 	src/fast_fourier_transform.o \
-	src/direct_fourier_transform.o \
-	src/dt10/direct_fourier_transform_parfor_inner.o
+	src/direct_fourier_transform.o
 
 FOURIER_OBJS = $(FOURIER_CORE_OBJS) $(FOURIER_IMPLEMENTATION_OBJS)
 
@@ -27,9 +26,5 @@ bin/test_fourier_transform : src/test_fourier_transform.cpp $(FOURIER_OBJS)
 bin/time_fourier_transform : src/time_fourier_transform.cpp $(FOURIER_OBJS)
 	-mkdir -p bin
 	$(CXX) $(CPPFLAGS) $^ -o $@ $(LDFLAGS) $(LDLIBS)
-
-bin/time_fourier_transform.prof : src/time_fourier_transform.cpp $(FOURIER_OBJS)
-	-mkdir -p bin
-	$(CXX) $(CPPFLAGS) $^ -pg -o $@ $(LDFLAGS) $(LDLIBS)
 
 all : bin/test_fourier_transform bin/time_fourier_transform
