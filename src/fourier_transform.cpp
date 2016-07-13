@@ -82,7 +82,7 @@ std::shared_ptr<fourier_transform> fourier_transform::CreateTransform(const std:
 {
 	auto it=s_factories.find(name);
 	if(it==s_factories.end())
-		throw std::invalid_argument("No factory registered with that name.");
+		throw std::invalid_argument("No factory registered with the name '"+name+"'");
 
 	return it->second();
 }
