@@ -277,7 +277,7 @@ Partitioners and grain size
 ---------------------------
 
 By default, `tbb::parallel_for` uses something called
-the `auto_partitioner`, which is used to [partition](https://www.threadingbuildingblocks.org/docs/help/reference/algorithms/partitioners.htm)
+the `auto_partitioner`, which is used to [partition](https://www.threadingbuildingblocks.org/docs/help/reference/algorithms/partitioners.html)
 your iteration space into parallel chunks. The auto-partitioner
 attempts to balance the number of parallel tasks created
 against the amount of computation at each iteration
@@ -399,7 +399,7 @@ _Hint: in order to save time: [atoi](http://www.cplusplus.com/reference/cstdlib/
 turn a string into an integer._
 
 You should think about what "sensible default" means: the TBB user
-guide gives [some guidance](https://www.threadingbuildingblocks.org/docs/help/tbb_userguide/Controlling_Chunking.htm)
+guide gives [some guidance](https://www.threadingbuildingblocks.org/docs/help/tbb_userguide/Controlling_Chunking.html)
 in the form of a "rule of thumb". Your rule of thumb
 should probably take into account the approximate amount
 of work per inner iteration point, so you don't want
