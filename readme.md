@@ -264,7 +264,7 @@ need to make sure that you include the appropriate header for parallel_loop from
 TBB at the top of the file, so that the function can be found.
 
 
-4. Exploring the grain size of parallel_for
+3. Exploring the grain size of parallel_for
 ===========================================
 
 We are now going to explore tuning the grain size,
@@ -407,13 +407,13 @@ to choose K=1. However, you would like to eventually
 have _some_ parallelism, so you also can't choose a
 really large default K.
 
-**Task**: create a graph called `results/direct_outer_versus_k.pdf` which
+**Task**: create a graph called `results/direct_inner_versus_k.pdf` which
 explores the performance of K=[1..16] versus time for n=[64,256,1024,4096].
 K should be on the x-axis, time on the y-axis, and each n is a different line.
 Time should extend up to 30 seconds per test run, which you can achieve with:
 
     export HPCE_DIRECT_INNER_K = <Whatever K you want>
-    bin/time_fourier_transform hpce.direct_fourier_transform 0 30
+    bin/time_fourier_transform hpce.direct_fourier_transform_parfor_inner 0 30
 
 You can generate this file manually by running the
 program 16 times, picking out the values and putting
@@ -421,7 +421,7 @@ them in a spreadsheet, or you might want to
 explore automation further using [scripting and pivot charts](csv_and_pivot.md).
 
 
-2. Using tbb::parallel_for in direct_fourier_transform _properly_
+4. Using tbb::parallel_for in direct_fourier_transform _properly_
 =================================================================
 
 You should be seeing different performance as you scale K (up to a point),
@@ -475,7 +475,7 @@ order to go parallel, we have to pay something for the
 libraries.
 
 
-4. Using tbb::task_group in fast_fourier_transform
+5. Using tbb::task_group in fast_fourier_transform
 ==================================================
 
 The file `src/fast_fourier_transform.cpp` contains a radix-2
@@ -583,7 +583,7 @@ As before, test the implementation to make sure it still
 works.
 
 
-5. Adjustable grain size for the FFT
+6. Adjustable grain size for the FFT
 ====================================
 
 Our recursive parallel FFT is currently splitting down to
@@ -619,7 +619,7 @@ _Note: this is an in-place modification, rather than a new class._
 **Task:** : Create a graph called `results/fast_fourier_time_vs_recursion_k.pdf`. This
 should have n on the x-axis, time on the y-axis, and lines for K=[2,4,8,16,32,64].
 
-6. Using parallel iterations in the FFT
+7. Using parallel iterations in the FFT
 =======================================
 
 Making the loop parallelisable
@@ -715,7 +715,7 @@ default based on your analysis of the scaling with n, and/or
 experiments. Though remember, it should be a sensible default
 for all machines (even those with 64 cores).
 
-7. Combine both types of parallelism
+8. Combine both types of parallelism
 ====================================
 
 We now have two types of parallelism that we know work,
@@ -736,7 +736,7 @@ which puts n on the x-axis, time on the y-axis, has four lines:
 
 I'm beeing vague here with "seems to work best". I'll let you resolve it.
 
-10. Submission
+9. Submission
 =============
 
 Double-check your names all match up, as I'll be trying
@@ -757,7 +757,7 @@ exist are:
 
 Graphs which should exist are:
 
-- `results/direct_outer_versus_k.pdf`
+- `results/direct_inner_versus_k.pdf`
 - `results/direct_outer_time_versus_p.pdf`
 - `results/direct_outer_strong_scaling.pdf`
 - `results/direct_outer_strong_scaling.pdf`
