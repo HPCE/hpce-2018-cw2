@@ -4,6 +4,29 @@ This coursework is due on:
 
 Submisssion is via github.
 
+I will be doing incremental testing starting from Tue 25th, but only
+based on what you currently have in your github private repo. When
+exactly that testing happens will be sporadic and unpredictable (no
+more than once a day), both by intention (to avoid dependency on
+a perceived "deadline") and necessity (I have to kick it off manually).
+
+The process I'll follow is:
+
+- Clone from your "master" branch
+
+- Run tests on my local setup and record results
+
+- Push the results back into a folder called `dt10_logs` in your private repository.
+
+It is up to you to keep your repository in a compilable
+state. You can do this by either:
+
+1 - Collecting commits locally until you are happy with a "release" you want
+    to push.
+  
+2 - Using a "dev" branch to handle speculative development, then push to
+    the "master" branch when you reach milestones.
+
 0. Overview
 ===========
 
