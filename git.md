@@ -18,11 +18,11 @@ You started the coursework by cloning the
 remote origin repository:
 
 ``` text
-https://github.com/HPCE/hpce-2015-cw3  (v1)
- |              
+https://github.com/HPCE/hpce-2016-cw2  (v1)
+ |
  |  Clone                ^
- V                     origin 
-/home/dt10/hpce-2015-cw3 (v1)
+ V                     origin
+/home/dt10/hpce-2016-cw2 (v1)
 ```
 
 Your local repository is then yours to work with,
@@ -31,11 +31,11 @@ example, lets say you change and add some local
 files, taking your local version up to "v4":
 
 ``` text
-https://github.com/HPCE/hpce-2015-cw3  (v1)
+https://github.com/HPCE/hpce-2016-cw2  (v1)
  :
  :                        ^
- :                      origin 
-/home/dt10/hpce_2015-cw3 (v4)
+ :                      origin
+/home/dt10/hpce_2016-cw2 (v4)
 ```
 
 If I were to now make some changes to the origin
@@ -45,11 +45,11 @@ version "v7". You could then "pull" those changes,
 which would get integrated into your local repository:
 
 ``` text
-https://github.com/HPCE/hpce-2015-cw3  (v7)
+https://github.com/HPCE/hpce-2016-cw2  (v7)
  |
  |  git pull              ^
  V                      origin
-/home/dt10/hpce-2015-cw3 (v9)
+/home/dt10/hpce-2016-cw2 (v9)
 ```
 
 The version numbers I'm using are quite notional,
@@ -62,8 +62,8 @@ Pushing to a remote private repository
 You should have been given a remote repository
 on github that you have read/write access to,
 and is visible in the website. The name I used
-was `hpce-2015-cw3-[login]`, so in my case it is
-`hpce-2015-cw3-dt10`. I now want to add that
+was `hpce-2016-cw2-[login]`, so in my case it is
+`hpce-2016-cw2-dt10`. I now want to add that
 repository as a new place I can push to, while
 keeping the link to the "origin" source (this
 is actually what github will say as well if
@@ -72,21 +72,21 @@ you look at your repository).
 I can use [`git remote add`](https://help.github.com/articles/adding-a-remote/)
 to do this:
 
-    git remote add private git@github.com:HPCE/hpce-2015-cw3-dt10.git
+    git remote add private git@github.com:HPCE/hpce-2016-cw2-dt10.git
 
 This has set up a new relationship between my local
 repository and a different remote:
 
 ``` text
-https://github.com/HPCE/hpce-2015-cw3  (v7)
+https://github.com/HPCE/hpce-2016-cw2  (v7)
  :
  :                        ^
  :                      origin
-/home/dt10/hpce-2015-cw3 (v9)
+/home/dt10/hpce-2016-cw2 (v9)
  :                      private
  :                        v
  :
-git@github.com:HPCE/hpc-_2015-cw3-dt10.git (v0)
+git@github.com:HPCE/hpc-_2016-cw2-dt10.git (v0)
 ```
 
 I can now "push" my local repository into the private
@@ -97,15 +97,15 @@ copy, using:
 which does:
 
 ``` text
-https://github.com/HPCE/hpce-2015-cw3  (v7)
+https://github.com/HPCE/hpce-2016-cw2  (v7)
  :
  :                        ^
  :                      origin
-/home/dt10/hpce-2015-cw3 (v9)
+/home/dt10/hpce-2016-cw2 (v9)
  |                      private
  |  Push                  v
  V
-git@github.com:HPCE/hpce-2015-cw3-dt10.git (v9)
+git@github.com:HPCE/hpce-2016-cw2-dt10.git (v9)
 ```
 
 You local and private repository are now in sync and
@@ -114,30 +114,30 @@ edits and commits in your local repository, taking it
 up to "v11" (again, these version numbers are artificial):
 
 ``` text
-https://github.com/HPCE/hpce-2015-cw3  (v7)
+https://github.com/HPCE/hpce-2016-cw2  (v7)
  :
  :                         ^
  :                       origin
-/home/dt10/hpce-2015-cw3 (v11)
+/home/dt10/hpce-2016-cw2 (v11)
  :                       private
- :                         v            
- :                                      
+ :                         v
+ :
 git@github.com:HPCE/hpce_2015_cw3-dt10.git (v9)
 ```
 
 which could then be pushed back up to your private repo:
 
 ``` text
-https://github.com/HPCE/hpce-2015-cw3  (v7)
+https://github.com/HPCE/hpce-2016-cw2  (v7)
  :
  :                         ^
  :                       origin
-/home/dt10/hpce-2015-cw3 (v11)
+/home/dt10/hpce-2016-cw2 (v11)
  |                       private
  |                         v
  | git push private master
  V
-git@github.com:HPCE/hpce-2015-cw3-dt10.git (v9)
+git@github.com:HPCE/hpce-2016-cw2-dt10.git (v9)
 ```
 
 If I were to make updates to the origin repository
@@ -145,16 +145,16 @@ taking it to v13, you could continue to integrate
 those changes by pulling from "origin":
 
 ``` text
-https://github.com/HPCE/hpce-2015-cw3  (v13)
+https://github.com/HPCE/hpce-2016-cw2  (v13)
  |
  |  git pull origin master
  |                          ^
  V                       origin
-/home/dt10/hpce-2015-cw3 (v13)
+/home/dt10/hpce-2016-cw2 (v13)
  :                       private
  :                         v
  :
-git@github.com:HPCE/hpce-2015-cw3-dt10.git (v9)
+git@github.com:HPCE/hpce-2016-cw2-dt10.git (v9)
 ```
 
 which would get integrated, then could be
@@ -177,25 +177,25 @@ to check that you are correctly authenticated.
 
 You can now clone your private github repository:
 
-    git clone git@github.com:HPCE/hpce-2015-cw3-dt10.git
+    git clone git@github.com:HPCE/hpce-2016-cw2-dt10.git
 
 This will give you another "local" repository,
 except it will be on another machine:
 
 ``` text
-https://github.com/HPCE/hpce-2015-cw3  (v13)
+https://github.com/HPCE/hpce-2016-cw2  (v13)
  :
  :                         ^
  :                       origin
-/home/dt10/hpce-2015-cw3 (v13)
- :                       private                   
+/home/dt10/hpce-2016-cw2 (v13)
+ :                       private
  :                         v
  :
-git@github.com:HPCE/hpce_2015-cw3-dt10.git (v13)
+git@github.com:HPCE/hpce_2016-cw2-dt10.git (v13)
  |
  |  git clone ...          ^
  V                       origin
-/home/dt10/hpce-2015-cw3 (v13)
+/home/dt10/hpce-2016-cw2 (v13)
 ```
 
 The two "local" repositories are not directly
@@ -206,19 +206,19 @@ it up to v15, you can bring them back with a
 push from the remote machine:
 
 ``` text
-https://github.com/HPCE/hpce-2015-cw3  (v13)
+https://github.com/HPCE/hpce-2016-cw2  (v13)
  :
  :                         ^
  :                       origin
-/home/dt10/hpce-2015-cw3 (v13)
+/home/dt10/hpce-2016-cw2 (v13)
  :                       private
  :                         v
  :
-git@github.com:HPCE/hpce-2015-cw3-dt10.git (v15)
+git@github.com:HPCE/hpce-2016-cw2-dt10.git (v15)
  ^
  |  git push origin        ^
  |                       origin
-/home/dt10/hpce-2015-cw3 (v15)
+/home/dt10/hpce-2016-cw2 (v15)
 ```
 
 From there, you can bring the changes back to
