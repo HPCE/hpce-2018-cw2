@@ -174,9 +174,7 @@ A rough guide is:
 
 5. Customise the selected columns and chart format as required.
 
-I did a brief video review of this on panopto, as it is a GUI thing:
-
-<iframe src="https://imperial.cloud.panopto.eu/Panopto/Pages/Embed.aspx?id=40cf42c4-b801-4574-95d6-ac31f59da719&v=1" width="720" height="405" style="padding: 0px; border: 1px solid #464646;" frameborder="0"></iframe>
+I did a brief [video review](https://imperial.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=40cf42c4-b801-4574-95d6-ac31f59da719) of this on panopto, as it is a GUI thing.
 
 Pivot charts are great for exploring data, and make it
 easier to redraw or re-examine the same data-set in
