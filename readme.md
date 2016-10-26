@@ -592,8 +592,8 @@ the transform still passes the test cases.
 In the fast fourier transform there is a natural splitting
 recursion in the section:
 
-    forwards_impl(m,wn*wn,pIn,2*sIn,pOut,sOut);
-    forwards_impl(m,wn*wn,pIn+sIn,2*sIn,pOut+sOut*m,sOut);
+    recurse(m,wn*wn,pIn,2*sIn,pOut,sOut);
+    recurse(m,wn*wn,pIn+sIn,2*sIn,pOut+sOut*m,sOut);
 
 Modify the code to use tbb::task_group to turn the two
 calls into child tasks. Don't worry about efficiency
