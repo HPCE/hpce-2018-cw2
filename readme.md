@@ -61,7 +61,7 @@ simple TBB intro in CW1, with this experiment to embed
 the TBB approach and explore it in a bit more detail. There
 is also more emphasis on exploring performance, as I think
 that previously people focussed on just getting the code
-working. There are quite a few graphs to get (six), but
+working. There are quite a few graphs to get (five), but
 if you follow the advice about how to automate things, it
 is fairly quick to get them.
 
@@ -783,9 +783,11 @@ Graphs which should exist are:
 - `results/direct_inner_versus_k.pdf`
 - `results/direct_outer_time_versus_p.pdf`
 - `results/direct_outer_strong_scaling.pdf`
-- `results/direct_outer_strong_scaling.pdf`
 - `results/fast_fourier_time_vs_recursion_k.pdf`
 - `results/fast_fourier_recursion_versus_iteration.pdf`
+
+_Note: originally `results/direct_outer_strong_scaling.pdf` was
+listed twice. Thanks to @Szypicyn for [pointing it out](https://github.com/HPCE/hpce-2016-cw2/issues/22)._
 
 However, you can put other files in if you want. Performance
 results are always interesting, though not required.
