@@ -3,7 +3,7 @@ Things to note about AWS
 
 First AWS is a commercial service, and they are in the
 business of charging people money for access. This
-course relies either on free instances, or on the $35 dollars
+course relies either on free instances, or on the $100 dollars
 that Amazon give you (https://aws.amazon.com/education/awseducate/), but be aware that
 there are consequences of leaving instances turned on
 for long periods of time. Each type of instance
