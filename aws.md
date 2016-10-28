@@ -304,7 +304,7 @@ You should see four or five packages related
 to tbb, but libtbb-dev should force everything
 you need in:
 
-    sudo apt-get libtbb-dev
+    sudo apt-get install libtbb-dev
 
 Getting code over to your machine
 ---------------------------------
