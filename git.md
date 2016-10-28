@@ -1,6 +1,10 @@
 Pushing to a remote git repository
 ==================================
 
+_Note: [you can use either https or ssh based autentication](https://github.com/HPCE/hpce-2016-cw2/issues/25).
+Either works, but ssh [requires some setup](https://help.github.com/articles/generating-an-ssh-key/),
+while https means you have to type in your password every time._
+
 Set up and pull
 ---------------
 
