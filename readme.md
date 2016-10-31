@@ -10,6 +10,10 @@ exactly that testing happens will be sporadic and unpredictable (no
 more than once a day), both by intention (to avoid dependency on
 a perceived "deadline") and necessity (I have to kick it off manually).
 
+_Note: there were some problems with [my definition of test number 39](https://github.com/HPCE/hpce-2016-cw2/issues/37),
+so it was passing when I expected things to pass, but not failing when I expected them to fail. For the final
+run I'll take that test out. Thanks to @Filippo555 and @jeremych1000 for the discussion._
+
 The process I'll follow is:
 
 - Clone from your "master" branch
