@@ -1,6 +1,6 @@
 This coursework is due on:
 
-    Mon Oct 31st at 22:00
+    Fri Oct 27th at 22:00
 
 Submisssion is via github.
 
@@ -10,7 +10,7 @@ exactly that testing happens will be sporadic and unpredictable (no
 more than once a day), both by intention (to avoid dependency on
 a perceived "deadline") and necessity (I have to kick it off manually).
 
-_Note: there were some problems with [my definition of test number 39](https://github.com/HPCE/hpce-2016-cw2/issues/37),
+_Note: there were some problems with [my definition of test number 39](https://github.com/HPCE/hpce-2017-cw2/issues/37),
 so it was passing when I expected things to pass, but not failing when I expected them to fail. For the final
 run I'll take that test out. Thanks to @Filippo555 and @jeremych1000 for the discussion._
 
@@ -57,11 +57,11 @@ _Dislaimer: Never write your own fourier transform for production
 use. Everything you do here will be slower and less accurate than
 existing FFT libraries._
 
-You may notice that this used to be CW3 in previous years, but is now CW2. This is
-to reflect the change in order and emphasis compared to previous years.
+You may notice that this used to be CW3 a few years ago, but is now CW2.
+This is to reflect the change in order and emphasis compared to previous years.
 The older matlab experiment (which was awesome, but no-one
 liked matlab) has disappeared in favour of the very
-simple TBB intro in CW1, with this experiment to embed
+simple TBB intro in CW1, with this experiment to elaborate
 the TBB approach and explore it in a bit more detail. There
 is also more emphasis on exploring performance, as I think
 that previously people focussed on just getting the code
@@ -75,10 +75,10 @@ is fairly quick to get them.
 Choose a Target Environment
 ---------------------------
 
-You can select your environement in a similar way to CW1,
+You can select your environment in a similar way to CW1,
 but the assessed compilation and evaluation will be done
 under Ubuntu in AWS. My plan is to use a [c4.8xlarge](http://aws.amazon.com/ec2/instance-types/)
-instance, but you certainly shouldn't optimise your code
+instance, but you don't need to optimise your code
 specifically for that machine. This shouldn't matter
 to you now (as you're not relying on anything apart from
 TBB), but is more encouragement to [try out AWS](aws.md) before
@@ -93,13 +93,12 @@ you a private repository again, but this time it will be empty.
 It is up to you `clone` a local copy of the master repository,
 then `push` it back up to your private repository. There
 are more details on this in the [brief git intro](git.md).
+[Also.](http://xkcd.com/1597/)
 
 _Note: It is not a disaster if submission via github
 doesn't work, as I will also be getting people to do a blackboard
 submission as backup so I get the code. However, I did this
-for the last two years, and it worked fine._
-
-[Highly topical](http://xkcd.com/1597/)
+for the last three years, and it worked fine._
 
 The fourier transform framework
 -------------------------------
@@ -295,8 +294,8 @@ TBB at the top of the file, so that the function can be found.
 ===========================================
 
 We are now going to explore tuning the grain size,
-which is essentially adjusting the computation to
-parallel overhead ratio. This should provide much
+which is essentially adjusting the ratio of computation to
+parallel overhead. This should provide much
 more explicit versions of the tradeoffs that you
 may have seen in the previous coursework.
 
@@ -325,7 +324,7 @@ space:
         }
     }, tbb::simple_partitioner());
 
-this is still equivalent both to the original loop, but
+This is still equivalent to the original loop, but
 now we have more control. If we unpack it a bit, we
 could say:
 
@@ -371,7 +370,7 @@ user to choose a value K at run-time using an environment variable.
 
 The function [`getenv`](http://www.cplusplus.com/reference/cstdlib/getenv/)
 allows a program to read [environment variables](http://en.wikipedia.org/wiki/Environment_variable)
-at run-time. So if I choose an environment variable called HPCE_X, I could
+at run-time. So if I choose an environment variable called `HPCE_X`, I could
 create a C++ program `read_x`:
 
     #include <cstdlib>
@@ -404,25 +403,25 @@ then on the command line I could do:
       HCPE_X = 100
 
 Environment variables are a way of defining ambient properties,
-and are often used for tuning the execution of program for the
+and are often used for tuning the execution of a program for the
 specific machine they are on (I'm not saying it's the best way,
-but it happens a lot). I used the "HPCE_" prefix as I want to
+but it happens a lot). I used the `HPCE_` prefix as I want to
 try to avoid clashes with other programs that might want a
-variable called "X".
+variable called `X`.
 
 ### Add parameterisable chunking to your class
 
 Modify your implementation of `direct_fourier_transform_parfor_inner`
-to use a chunk size K, where K is either
+to use a chunk size _K_, where _K_ is either
 specified as a decimal integer using the environment
-variable `HPCE_DIRECT_INNER_K`, or if it is not set, you should use
+variable `HPCE_DIRECT_INNER_K`. If it is not set, you should use
 a sensible default. For example, if the user does:
 
     export HPCE_DIRECT_INNER_K=16
 
 you would use a chunk size of 16 for the inner loop.
 
-_Hint: in order to save time: [atoi](http://www.cplusplus.com/reference/cstdlib/atoi/) can
+_Hint: in order to save you time: [atoi](http://www.cplusplus.com/reference/cstdlib/atoi/) can
 turn a string into an integer._
 
 You should think about what "sensible default" means: the TBB user
@@ -464,9 +463,9 @@ Be very careful to test your output, and don't blindly assume
 that things are correct. You may want to look carefully at
 what the two loops are doing, and how they interact:
 
-- Can you turn the accumulation into the array into accumulation into a scalar?
+- Can you convert from accumulation into an array to accumulation into a scalar?
 
-- Think about the 2d iteration space and the dependencies.
+- Think about the 2d iteration space and the dependencies within it.
 
 - Can you interchange the loops (iterate over a different dimension
   of the iteration space as the outer loop)?
@@ -789,9 +788,6 @@ Graphs which should exist are:
 - `results/direct_outer_strong_scaling.pdf`
 - `results/fast_fourier_time_vs_recursion_k.pdf`
 - `results/fast_fourier_recursion_versus_iteration.pdf`
-
-_Note: originally `results/direct_outer_strong_scaling.pdf` was
-listed twice. Thanks to @Szypicyn for [pointing it out](https://github.com/HPCE/hpce-2016-cw2/issues/22)._
 
 However, you can put other files in if you want. Performance
 results are always interesting, though not required.
