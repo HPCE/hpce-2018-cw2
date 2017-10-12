@@ -4,15 +4,11 @@ This coursework is due on:
 
 Submisssion is via github.
 
-I will be doing incremental testing starting from Tue 25th, but only
+I will be doing incremental testing starting from Fri 20th, but only
 based on what you currently have in your github private repo. When
 exactly that testing happens will be sporadic and unpredictable (no
 more than once a day), both by intention (to avoid dependency on
 a perceived "deadline") and necessity (I have to kick it off manually).
-
-_Note: there were some problems with [my definition of test number 39](https://github.com/HPCE/hpce-2017-cw2/issues/37),
-so it was passing when I expected things to pass, but not failing when I expected them to fail. For the final
-run I'll take that test out. Thanks to @Filippo555 and @jeremych1000 for the discussion._
 
 The process I'll follow is:
 
