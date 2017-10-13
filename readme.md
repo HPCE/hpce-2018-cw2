@@ -27,8 +27,8 @@ state. You can do this by either:
 2 - Using a "dev" branch to handle speculative development, then push to
     the "master" branch when you reach milestones.
 
-0. Overview
-===========
+-0- Overview
+============
 
 This coursework explores parallelism using threaded-building
 blocks in a bit more detail. You should see _linear speedup_ here
@@ -65,8 +65,8 @@ working. There are quite a few graphs to get (five), but
 if you follow the advice about how to automate things, it
 is fairly quick to get them.
 
-1. Environment and setup
-=======================
+-1- Environment and setup
+=========================
 
 Choose a Target Environment
 ---------------------------
@@ -156,8 +156,8 @@ direct versus the fast transform. Remember that
 parallelism and optimisation are never a substitute
 for an algorithm with a better intrinsic complexity.
 
-2. Using tbb::parallel_for (badly) in direct_fourier_transform
-======================================================
+-2- Using tbb::parallel_for (badly) in direct_fourier_transform
+===============================================================
 
 The file `src/direct_fourier_transform.cpp` contains a classic
 discrete fourier transform, which takes O(n^2) operations to
@@ -286,8 +286,8 @@ need to make sure that you include the appropriate header for parallel_loop from
 TBB at the top of the file, so that the function can be found.
 
 
-3. Exploring the grain size of parallel_for
-===========================================
+-3- Exploring the grain size of parallel_for
+============================================
 
 We are now going to explore tuning the grain size,
 which is essentially adjusting the ratio of computation to
@@ -443,8 +443,8 @@ them in a spreadsheet, or you might want to
 explore automation further using [scripting and pivot charts](csv_and_pivot.md).
 
 
-4. Using tbb::parallel_for in direct_fourier_transform _properly_
-=================================================================
+-4- Using tbb::parallel_for in direct_fourier_transform _properly_
+==================================================================
 
 You should be seeing different performance as you scale K (up to a point),
 and hopefully be developing an intuition that the inner loop
@@ -497,8 +497,8 @@ order to go parallel, we have to pay something for the
 libraries.
 
 
-5. Using tbb::task_group in fast_fourier_transform
-==================================================
+-5- Using tbb::task_group in fast_fourier_transform
+===================================================
 
 The file `src/fast_fourier_transform.cpp` contains a radix-2
 fast fourier transform, which takes O(n log n) operations to
@@ -605,8 +605,8 @@ As before, test the implementation to make sure it still
 works.
 
 
-6. Adjustable grain size for the FFT
-====================================
+-6- Adjustable grain size for the FFT
+=====================================
 
 Our recursive parallel FFT is currently splitting down to
 individual tasks, which goes against the
@@ -641,8 +641,8 @@ _Note: this is an in-place modification, rather than a new class._
 **Task:** : Create a graph called `results/fast_fourier_time_vs_recursion_k.pdf`. This
 should have n on the x-axis, time on the y-axis, and lines for K=[2,4,8,16,32,64].
 
-7. Using parallel iterations in the FFT
-=======================================
+-7- Using parallel iterations in the FFT
+========================================
 
 Making the loop parallelisable
 ------------------------------
@@ -737,8 +737,8 @@ default based on your analysis of the scaling with n, and/or
 experiments. Though remember, it should be a sensible default
 for all machines (even those with 64 cores).
 
-8. Combine both types of parallelism
-====================================
+-8- Combine both types of parallelism
+=====================================
 
 We now have two types of parallelism that we know work,
 so the natural choice is to combine them together.
@@ -758,8 +758,8 @@ which puts n on the x-axis, time on the y-axis, has four lines:
 
 I'm beeing vague here with "seems to work best". I'll let you resolve it.
 
-9. Submission
-=============
+-9- Submission
+==============
 
 Double-check your names all match up, as I'll be trying
 to create your transforms both by direct instantiation,
