@@ -53,12 +53,12 @@ which gives you certain advantages:
 The t2.micro instances are great for checking compilation
 and automation, as you don't need to worry about cost.
 
-Any other instances will eat into your $35, so you need
+Any other instances will eat into your $100, so you need
 to be a bit careful about managing them. Things to
 note are:
 
-- If you have an instance running for t hours, you will
-  be billed for ceil(t) hours. So a GPU instance used for
+- If you have an instance running for _t_ hours, you will
+  be billed for _ceil(t)_ hours. So a GPU instance used for
   10 minutes will cost the same as an hour.
   
 - Stopping then starting an instance will cause the time
@@ -282,7 +282,7 @@ it. Try running g++:
 And it will tell you it is not installed, but
 does suggest how to install it:
 
-	sudo apt-get g++
+	sudo apt-get install g++
 
 This involves two commands:
 
@@ -324,6 +324,12 @@ environment back out to github. The main sticking point
 is authentication, as your AWS instance will be able
 to communicate with github, but doesn't have
 access to your keys.
+
+You can use `https` to move code backwards and forwards
+over git, but this requires you to type/paste in your password each
+time you push or pull. It is simpler in the short term,
+but wastes a lot of time long-term. The better solution
+is to use SSH, and it is also generally more secure.
 
 You could transfer your SSH keys over and use `ssh-agent`
 remotely, but it is better to keep your keys where you
