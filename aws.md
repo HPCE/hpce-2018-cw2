@@ -78,7 +78,7 @@ Don't start working with a GPU or large instance unless
 you know you'll be able to spend a reasonable amount of
 time with it, and use cheaper instances, lab/personal
 machines and VMs to test build automation, compilation, and
-testing whenever possible. Though if you consider $35 at $0.65
+testing whenever possible. Though if you consider $100 at $0.65
 an hour, you're looking at 50+ hours, so there is plenty there.
 
 Best practises for using AWS
@@ -107,17 +107,19 @@ and create an AWS account.
 
 It will ask you for a credit or debit card, but this
 will not be charged if you only use free instances,
-and/or stay within the $35 credit you'll get. As
+and/or stay within the $100 credit you'll get. As
 I mentioned above, this is real money, but as long
 as you manage your instances it won't cost you
 anything.
 
-Create a (tiny, free) Ubuntu 14.04 machine instance
+Create a (tiny, free) Ubuntu 16.04 machine instance
 ---------------------------------------------------
 
 ### Step 1: Choose an Amazon Machine Image (AMI)
 
-AWS: choose Ubuntu Server 14.04 LTS (HVM)
+AWS: choose "Ubuntu Server 16.04 LTS (HVM)".
+(_I actually use Debian for AWS, but for those starting out
+with a new machine Ubuntu is often easier to start with_)
 
 ### Step 2: Choose an Instance Type
 
@@ -173,7 +175,7 @@ Do Next: a dialogue should pop up saying
 First, do _not_ proceed without a key pair. These things are important,
 as they are the thing that allows you to SSH into your instance.
 
-1. Read the description of the key pair that it gives you.
+1. Read the description of key pairs that it shows to you.
 
 2. Select "Create a new key pair". 
 
@@ -192,6 +194,12 @@ as they are the thing that allows you to SSH into your instance.
 
 Just re-emphasising the important of key pairs: they
 are essentially the front-door key to your server.
+
+If you ever accidentally put your key-pair somewhere publically
+accessible, then you should abandon that key-pair and create
+a new one. It is possible to protect your key-pair with a
+passphrase as well, or import an existing ssh key, but
+the details [start to get more complicated](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html).
 
 Connecting to the instance
 --------------------------
