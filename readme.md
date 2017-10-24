@@ -432,7 +432,10 @@ really large default K.
 **Task**: create a graph called `results/direct_inner_versus_k.pdf` which
 explores the performance of K=[1..16] versus time for n=[64,256,1024,4096].
 K should be on the x-axis, time on the y-axis, and each n is a different line.
-Time should extend up to 30 seconds per test run, which you can achieve with:
+Depending on your machine and OS, you may find it takes more than the default time limit
+of 10 seconds when K=1 and n=4096 ([or not](https://github.com/HPCE/hpce-2017-cw2/issues/56))
+so you may wish to extend the maximum run-time up to 30 seconds using an additional
+command line parameter:
 
     export HPCE_DIRECT_INNER_K = <Whatever K you want>
     bin/time_fourier_transform hpce.[YOUR_LOGIN].direct_fourier_transform_parfor_inner 0 30
