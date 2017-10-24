@@ -435,7 +435,7 @@ K should be on the x-axis, time on the y-axis, and each n is a different line.
 Time should extend up to 30 seconds per test run, which you can achieve with:
 
     export HPCE_DIRECT_INNER_K = <Whatever K you want>
-    bin/time_fourier_transform hpce.direct_fourier_transform_parfor_inner 0 30
+    bin/time_fourier_transform hpce.[YOUR_LOGIN].direct_fourier_transform_parfor_inner 0 30
 
 You can generate this file manually by running the
 program 16 times, picking out the values and putting
