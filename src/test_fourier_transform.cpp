@@ -41,8 +41,9 @@ static void verifyEqual(const T&got, const T &want, const std::string &message)
 	if(got!=want){
 		std::cerr<<"FAIL: "<<s_currentTest<<" got="<<got<<", expected="<<want<<", "<<message<<std::endl;
 		s_totalFailed++;
+	}else{
+		s_totalPassed++;
 	}
-	s_totalPassed++;
 }
 
 template<class T>
@@ -51,8 +52,9 @@ static void verifyClose(const T&got, const T &want, double absTol, const std::st
 	if(std::abs(got-want) > absTol){
 		std::cerr<<"FAIL: "<<s_currentTest<<" got="<<got<<", expected="<<want<<" (difference="<<got-want<<"), "<<message<<std::endl;
 		s_totalFailed++;
+	}else{
+		s_totalPassed++;
 	}
-	s_totalPassed++;
 }
 
 
