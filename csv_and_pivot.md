@@ -20,7 +20,7 @@ Notice that `bin/time_fourier_transform` has four parameters
 
     4. `prefix` : a prefix which will precede each output line.
 
-Also, notice that each output row is a row of comma seperated values, which
+Also, notice that each output row is a row of comma separated values, which
 means the output is _also_ a csv file. If you do:
 
     bin/time_fourier_transform hpce.direct_fourier_transform 0 1 > dump.csv
@@ -142,7 +142,7 @@ called `all.csv`. Now we are ready to pivot!
 ### Pivot!
 
 Excel is one tool that has good pivot features, but
-open office and google spreadshets have it too,
+open office and google spreadsheets have it too,
 and you can do it in matlab or python as well (as long as you
 are willing to code it). If you have a csv file, with a number of
 columns, then pivot tables let you:
@@ -178,5 +178,7 @@ I did a brief [video review](https://imperial.cloud.panopto.eu/Panopto/Pages/Vie
 
 Pivot charts are great for exploring data, and make it
 easier to redraw or re-examine the same data-set in
-different ways.
+different ways. You can perform similar functions using
+Python+Pandas+Jupyter+matplotlib, which is more powerful
+but requires more time to set up.
 

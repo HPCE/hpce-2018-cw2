@@ -1,10 +1,14 @@
 This coursework is due on:
 
-    Fri Oct 27th at 22:00
+    Mon Feb 4th at 22:00
 
-Submisssion is via github.
+Submission of deliverables is via github, but for
+this coursework I'll ask you to submit a safety zip as
+well, as some will be new to git. (For future courseworks
+only a hash will be submitted via blackboard, to prove when
+exactly you submitted).
 
-I will be doing incremental testing starting from Fri 20th, but only
+I will be doing incremental testing starting from Mon 28th, but only
 based on what you currently have in your github private repo. When
 exactly that testing happens will be sporadic and unpredictable (no
 more than once a day), both by intention (to avoid dependency on
@@ -16,7 +20,7 @@ The process I'll follow is:
 
 - Run tests on my local setup and record results
 
-- Push the results back into a folder called `dt10_logs` in your private repository.
+- Push the results back into a folder called `jsd06_logs` in your private repository.
 
 It is up to you to keep your repository in a compilable
 state. You can do this by either:
@@ -73,7 +77,7 @@ Choose a Target Environment
 
 You can select your environment in a similar way to CW1,
 but the assessed compilation and evaluation will be done
-under Ubuntu in AWS. My plan is to use a [c4.8xlarge](http://aws.amazon.com/ec2/instance-types/)
+under Ubuntu in AWS. My plan is to use a [c5.9xlarge](http://aws.amazon.com/ec2/instance-types/)
 instance, but you don't need to optimise your code
 specifically for that machine. This shouldn't matter
 to you now (as you're not relying on anything apart from
@@ -83,18 +87,19 @@ you _have_ to later on.
 Github accounts
 ---------------
 
-Submission will be via github, so this time you'll need
-to actually work with your private repository. I have created
-you a private repository again, but this time it will be empty.
+Submission will be via github, so this time you must
+work with your private repository. I have created
+you a private repository again (assuming you have sent
+a request to do the course), but this time it will be empty.
 It is up to you `clone` a local copy of the master repository,
 then `push` it back up to your private repository. There
 are more details on this in the [brief git intro](git.md).
 [Also.](http://xkcd.com/1597/)
 
 _Note: It is not a disaster if submission via github
-doesn't work, as I will also be getting people to do a blackboard
-submission as backup so I get the code. However, I did this
-for the last three years, and it worked fine._
+doesn't work, as **for this coursework only** I will also be
+getting people to do a blackboard submission as backup so I get
+the code. However, I did this for the last three years, and it worked fine._
 
 The fourier transform framework
 -------------------------------
@@ -177,8 +182,8 @@ one giant executable containing everyone in the
 class's transforms). The basic framework uses the namespace
 `hpce`, but your classes will live in the namespace
 `hpce::your_login`, and the source files in `src/your_login`.
-For example, my namespace is `hpce::dt10`, and my
-source files go in `src/dt10`.
+For example, my namespace is `hpce::jsd06`, and my
+source files go in `src/jsd06`.
 
 There are five steps in this process:
 
@@ -254,7 +259,7 @@ For example, I get:
 
     $ bin/test_fourier_transform
     hpce.direct_fourier_transform
-    hpce.dt10.direct_fourier_transform_parfor_inner
+    hpce.jsd06.direct_fourier_transform_parfor_inner
     hpce.fast_fourier_transform
 
 You can now test it or time it:
