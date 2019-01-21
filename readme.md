@@ -1,6 +1,6 @@
 This coursework is due on:
 
-    Mon Feb 4th at 22:00
+    22:00 Mon 4 Feb
 
 Submission of deliverables is via github, but for
 this coursework I'll ask you to submit a safety zip as
@@ -20,7 +20,7 @@ The process I'll follow is:
 
 - Run tests on my local setup and record results
 
-- Push the results back into a folder called `jsd06_logs` in your private repository.
+- Push the results back into a folder called `jjd06_logs` in your private repository.
 
 It is up to you to keep your repository in a compilable
 state. You can do this by either:
@@ -182,8 +182,8 @@ one giant executable containing everyone in the
 class's transforms). The basic framework uses the namespace
 `hpce`, but your classes will live in the namespace
 `hpce::your_login`, and the source files in `src/your_login`.
-For example, my namespace is `hpce::jsd06`, and my
-source files go in `src/jsd06`.
+For example, my namespace is `hpce::jjd06`, and my
+source files go in `src/jjd06`.
 
 There are five steps in this process:
 
@@ -259,7 +259,7 @@ For example, I get:
 
     $ bin/test_fourier_transform
     hpce.direct_fourier_transform
-    hpce.jsd06.direct_fourier_transform_parfor_inner
+    hpce.jjd06.direct_fourier_transform_parfor_inner
     hpce.fast_fourier_transform
 
 You can now test it or time it:
