@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
 
 		double log2n=4;
 
-		std::cerr<<"# "<<prefix<<" name, allowedP, trueP, n, [sentinel], time\n";
+		std::cout<<"# "<<prefix<<" name, allowedP, trueP, n, [sentinel], time\n";
 
 		while(log2n <= 26){	// Try not to blow up memory system
 			size_t n=(size_t)std::pow(2.0, log2n);
