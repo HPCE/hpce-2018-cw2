@@ -309,6 +309,13 @@ This involves two commands:
 
 - [apt-get](http://linux.die.net/man/8/apt-get) A package manager
   which handles the installation or removal of tools and libraries.
+
+If there is an error message stating that g++ cannot be installed,
+then the following can be run to make sure the AWS instance is up-to-date:
+
+    sudo apt-get update
+
+Then re-run the install, and g++ should be downloaded all ok. 
 	
 Similarly, try running git, make, and so on,
 and you'll find you need to install them too.
